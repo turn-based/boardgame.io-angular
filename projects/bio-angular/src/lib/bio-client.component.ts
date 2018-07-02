@@ -64,12 +64,15 @@ export class ClientComponent implements OnInit, OnChanges, AfterContentInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.client) {
+      // noinspection TsLint
       if (changes.gameID && changes.gameID.currentValue != changes.gameID.previousValue) {
         this.client.updateGameID(changes.gameID.currentValue);
       }
+      // noinspection TsLint
       if (changes.playerID && changes.playerID.currentValue != changes.playerID.previousValue) {
         this.client.updatePlayerID(changes.playerID.currentValue);
       }
+      // noinspection TsLint
       if (changes.credentials && changes.credentials.currentValue != changes.credentials.previousValue) {
         this.client.updateCredentials(changes.credentials.currentValue);
       }

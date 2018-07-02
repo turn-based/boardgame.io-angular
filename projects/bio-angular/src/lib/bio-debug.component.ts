@@ -121,6 +121,6 @@ export class DebugComponent implements OnInit, OnDestroy, OnChanges, AfterViewIn
   }
 
   ngOnDestroy() {
-    ReactDOM.unmountComponentAtNode(this.getRootDomNode())
+    ReactDOM.unmountComponentAtNode(this.getRootDomNode());
   }
 }

@@ -38,12 +38,12 @@ $ npm install --save boardgame.io-angular google/boardgame.io ng-dynamic-compone
        BoardgameIoModule, // import for using bio-client
      ],
      entryComponents: [
-       MyBoardComponent, // <-- must declare board as entryComponent!
+       MyBoardComponent, // <-- must declare board as an entryComponent!
      ]
    })
    export class MyModule {}
    ```
-4) Add you Client view to component using `bio-client`. Properties of both board and client from are available ([Client](http://boardgame.io/#/api/Client)):
+4) Add your client view using the `bio-client` component. Properties of both board and client from are available ([Client](http://boardgame.io/#/api/Client)):
    ```ts
    import { MyGame } from '.';
    import { MyBoardComponent } from '.';
@@ -82,4 +82,4 @@ $ npm i
 $ npm run examples 
 ```
 
-boardgame.io's examples will run on `localhost:8000' while boardgame.io-angular examples will run on port 4200 and reuse the same server. 
+boardgame.io's examples will run on `localhost:8000` while boardgame.io-angular's examples will run on `localhost:4200` and reuse the same server. 
