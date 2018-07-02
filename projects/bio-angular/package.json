@@ -1,8 +1,30 @@
 {
   "name": "boardgame.io-angular",
-  "version": "0.0.1",
+  "version": "0.24.0-beta.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turn-based/boardgame.io-angular.git"
+  },
+  "homepage": "https://github.com/turn-based/boardgame.io-angular",
+  "author": {
+    "name": "Amit Portnoy",
+    "email": "amit.portnoy@gmail.com",
+    "url": "https://amitport.github.io"
+  },
+  "license": "MIT",
+  "description": "Angular client for boardgame.io",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "boardgame.io": "github:google/boardgame.io",
+    "ng-dynamic-component": "^3.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "uuid": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.6",
+    "@types/react-dom": "^16.0.6",
+    "@types/uuid": "^3.4.3"
   }
 }

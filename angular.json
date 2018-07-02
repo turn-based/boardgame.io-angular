@@ -46,6 +46,9 @@
               "src/assets"
             ],
             "styles": [
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
               "src/styles.scss"
             ],
             "scripts": []
@@ -95,6 +98,9 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              {
+                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
               "src/styles.scss"
             ],
             "scripts": [],
@@ -149,7 +155,7 @@
       "root": "projects/bio-angular",
       "sourceRoot": "projects/bio-angular/src",
       "projectType": "library",
-      "prefix": "tb",
+      "prefix": "bio",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",

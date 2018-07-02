@@ -78,3 +78,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// todo remove this if https://github.com/webmodules/blob/pull/14 is resolved
+(window as any).global = window;

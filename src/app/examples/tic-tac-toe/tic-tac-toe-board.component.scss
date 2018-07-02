@@ -1,0 +1,31 @@
+.tic-tac-toe-board {
+  border-collapse: collapse;
+
+  td {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    color: #555;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border: 3px solid #aaa;
+    background: #fff;
+
+    &.active {
+      cursor: pointer;
+      background: #eeffe9;
+    }
+
+    &.active:hover {
+      background: #eeffff;
+    }
+  }
+}
+
+
+.winner {
+  margin-top: 25px;
+  width: 168px;
+  text-align: center;
+}

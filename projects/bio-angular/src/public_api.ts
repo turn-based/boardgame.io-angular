@@ -2,6 +2,5 @@
  * Public API Surface of bio-angular
  */
 
-export * from './lib/bio-angular.service';
-export * from './lib/bio-angular.component';
-export * from './lib/bio-angular.module';
+export * from './lib/bio-client.component';
+export * from './lib/boardgame-io.module';
