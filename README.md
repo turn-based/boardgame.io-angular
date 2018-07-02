@@ -1,8 +1,8 @@
 # Boardgame.io Angular Client
 
- <img src="https://badge.fury.io/js/boardgame.io-angular.svg" alt="npm version" /></a>
+ <a href="https://www.npmjs.com/package/boardgame.io-angular"><img src="https://badge.fury.io/js/boardgame.io-angular.svg" alt="npm version"></a>
 
- Angular client for [Boardgame.io](http://boardgame.io). <a href="https://www.npmjs.com/package/boardgame.io">
+ Angular client for [Boardgame.io](http://boardgame.io).
 
 ### Installation
 
