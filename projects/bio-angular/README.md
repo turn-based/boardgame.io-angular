@@ -44,7 +44,7 @@ $ npm install --save boardgame.io-angular google/boardgame.io ng-dynamic-compone
    export class MyModule {}
    ```
 4) Add you Client view to component using `bio-client`. Properties of both board and client from are available ([Client](http://boardgame.io/#/api/Client)):
-   ```
+   ```ts
    import { MyGame } from '.';
    import { MyBoardComponent } from '.';
   
