@@ -16,6 +16,8 @@ import { TicTacToeBoardComponent } from './tic-tac-toe/tic-tac-toe-board.compone
 import { NgxInitModule } from 'ngx-init';
 import { PhasesBoardComponent, PhasesExampleComponent } from './phases/phases-example.component';
 import { SecretStateBoardComponent, SecretStateExampleComponent } from './secret-state/secret-state-example.component';
+import { LobbyComponent } from './lobby/lobby.component';
+import { RoomComponent } from './lobby/room.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { SecretStateBoardComponent, SecretStateExampleComponent } from './secret
     SpectatorExampleComponent,
     PhasesExampleComponent,
     SecretStateExampleComponent,
+    LobbyComponent,
+    RoomComponent,
 
     TicTacToeBoardComponent,
     PhasesBoardComponent,
@@ -72,6 +76,20 @@ import { SecretStateBoardComponent, SecretStateExampleComponent } from './secret
             component: SpectatorExampleComponent,
             data: {
               title: 'Tic-Tac-Toe Spectator'
+            }
+          },
+          {
+            path: 'lobby',
+            component: LobbyComponent,
+            data: {
+              title: 'Lobby'
+            }
+          },
+          {
+            path: 'lobby/games/:gameType/rooms/:roomId',
+            component: RoomComponent,
+            data: {
+              title: 'Game Room'
             }
           },
           {

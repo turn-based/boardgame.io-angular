@@ -29,8 +29,7 @@ import { TicTacToeBoardComponent } from './tic-tac-toe-board.component';
                     [board]="TicTacToeBoardComponent"
                     [debug]="false"
                     [multiplayer]="{server: 'localhost:8000'}"
-                    gameID="spectator"
-                    playerID="1"></bio-client>
+                    gameID="spectator"></bio-client>
       </div>
     </div>
   `
