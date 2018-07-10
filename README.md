@@ -4,7 +4,7 @@
 
  Angular client for [Boardgame.io](http://boardgame.io).
   
- Checkout the [example application!](https://turn-based-209306.firebaseapp.com)
+ Checkout the [example application](https://turn-based-209306.firebaseapp.com)!
 
 ### Installation
 

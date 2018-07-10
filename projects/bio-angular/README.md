@@ -3,6 +3,8 @@
  <a href="https://www.npmjs.com/package/boardgame.io-angular"><img src="https://badge.fury.io/js/boardgame.io-angular.svg" alt="npm version"></a>
 
  Angular client for [Boardgame.io](http://boardgame.io).
+  
+ Checkout the [example application](https://turn-based-209306.firebaseapp.com)!
 
 ### Installation
 
@@ -60,7 +62,7 @@ $ npm install --save boardgame.io-angular google/boardgame.io ng-dynamic-compone
      board = MyBoardComponent;  
    }
    ```
-5) See [more examples](https://github.com/turn-based/boardgame.io-angular/tree/master/src/app/examples)
+5) See [the examples](https://github.com/turn-based/boardgame.io-angular/tree/master/src/app/examples)
 
 ### Running examples in this repository
 
@@ -73,13 +75,10 @@ $ npm run build
 $ npm run start
 ```
 
-For Running the multiplayer examples you'll also need boardgame.io's server up and running on port 8000. An easy way to start it is running their examples script in parallel to ours:
+For Running the multiplayer examples you'll also need to have the server running running on port 8000:
 
 ```
-$ git clone https://github.com/google/boardgame.io.git
-$ cd boardgame.io
+$ cd server
 $ npm i
-$ npm run examples 
+$ npm run start:dev 
 ```
-
-boardgame.io's examples will run on `localhost:8000` while boardgame.io-angular's examples will run on `localhost:4200` and reuse the same server. 
