@@ -1,9 +1,11 @@
 {
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host local.com",
     "build": "ng build bio-angular",
-    "build:prod": "ng build bio-angular --prod",
+    "build:lib:prod": "ng build bio-angular --prod",
+    "build:examples:prod": "ng build --prod",
+    "deploy:examples": "firebase deploy",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -22,7 +24,7 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
-    "boardgame.io": "github:google/boardgame.io#master",
+    "boardgame.io": "github:amitport/boardgame.io#allow-https",
     "core-js": "^2.5.4",
     "ng-dynamic-component": "^3.0.0",
     "ngx-init": "^0.1.0",

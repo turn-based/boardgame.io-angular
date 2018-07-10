@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "dist/turn-based-client",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TicTacToeBoardComponent } from './tic-tac-toe-board.component';
 import { HttpClient } from '@angular/common/http';
-import { TicTacToe } from './game';
+import { SERVER_HOSTNAME, SERVER_ORIGIN } from '../../site-config';
+import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
 
 @Component({
   template: `
@@ -13,7 +14,7 @@ import { TicTacToe } from './game';
             [game]="TicTacToe"
             [board]="Board"
             [debug]="false"
-            [multiplayer]="{server: 'localhost:8000'}"
+            [multiplayer]="{server: SERVER_HOSTNAME}"
             [gameID]="gameID"
             playerID="0"
             [credentials]="players['0'].credentials">
@@ -25,7 +26,7 @@ import { TicTacToe } from './game';
             [game]="TicTacToe"
             [board]="Board"
             [debug]="false"
-            [multiplayer]="{server: 'localhost:8000'}"
+            [multiplayer]="{server: SERVER_HOSTNAME}"
             [gameID]="gameID"
             playerID="1"
             [credentials]="players['1'].credentials">
@@ -48,6 +49,8 @@ import { TicTacToe } from './game';
   `
 })
 export class AuthenticatedExampleComponent implements OnInit {
+  SERVER_HOSTNAME = SERVER_HOSTNAME;
+
   TicTacToe = TicTacToe;
   Board = TicTacToeBoardComponent;
   gameID = 'gameID';
@@ -65,10 +68,9 @@ export class AuthenticatedExampleComponent implements OnInit {
 
   async ngOnInit() {
     const gameName = 'tic-tac-toe';
-    const PORT = 8000;
 
     const newGame = await this.httpClient
-      .post<{ gameID: string }>(`http://localhost:${PORT + 1}/games/${gameName}/create`, {
+      .post<{ gameID: string }>(`${SERVER_ORIGIN}/api/v1/games/${gameName}/create`, {
         numPlayers: 2
       }).toPromise();
 
@@ -78,7 +80,7 @@ export class AuthenticatedExampleComponent implements OnInit {
 
     for (const playerID of [0, 1]) {
       const player = await this.httpClient
-        .post<{ playerCredentials: string }>(`http://localhost:${PORT + 1}/games/${gameName}/${gameID}/join`, {
+        .post<{ playerCredentials: string }>(`${SERVER_ORIGIN}/api/v1/games/${gameName}/${gameID}/join`, {
           gameName,
           playerID,
           playerName: playerID.toString(),

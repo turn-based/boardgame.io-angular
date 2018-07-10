@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LobbyService } from './lobby.service';
 import { GAME_TYPES } from './game-types';
+import { SERVER_HOSTNAME } from '../../site-config';
 
 @Component({
   template: `
@@ -23,7 +24,7 @@ import { GAME_TYPES } from './game-types';
         <bio-client [game]="game"
                     [board]="board"
                     [debug]="false"
-                    [multiplayer]="{server: 'localhost:8000'}"
+                    [multiplayer]="{server: SERVER_HOSTNAME}"
                     [gameID]="roomId"
                     [playerID]="playerId"
                     [credentials]="credentials">
@@ -33,6 +34,8 @@ import { GAME_TYPES } from './game-types';
   `,
 })
 export class RoomComponent implements OnInit {
+  SERVER_HOSTNAME = SERVER_HOSTNAME;
+
   game: any;
   board: any;
 
