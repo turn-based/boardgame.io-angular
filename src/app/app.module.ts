@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExamplesModule } from './examples/examples.module';
 import { RouterModule } from '@angular/router';
+import { LobbyModule } from './lobby/lobby.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     BrowserAnimationsModule,
     ExamplesModule,
+    LobbyModule,
 
     RouterModule.forRoot([{path: '', pathMatch: 'full', redirectTo: 'examples'}]),
   ],

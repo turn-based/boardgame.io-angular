@@ -5,6 +5,7 @@ import {
   MatDividerModule,
   MatIconModule,
   MatListModule,
+  MatProgressBarModule,
   MatSidenavModule,
   MatToolbarModule
 } from '@angular/material';
@@ -21,6 +22,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
+    MatProgressBarModule,
 
     FlexLayoutModule,
   ],
