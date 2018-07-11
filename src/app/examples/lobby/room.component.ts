@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LobbyService } from './lobby.service';
 import { GAME_TYPES } from './game-types';
-import { SERVER_HOSTNAME } from '../../site-config';
+import { SERVER_HOST } from '../../site-config';
 
 @Component({
   template: `
@@ -24,7 +24,7 @@ import { SERVER_HOSTNAME } from '../../site-config';
         <bio-client [game]="game"
                     [board]="board"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOSTNAME}"
+                    [multiplayer]="{server: SERVER_HOST}"
                     [gameID]="roomId"
                     [playerID]="playerId"
                     [credentials]="credentials">
@@ -34,7 +34,7 @@ import { SERVER_HOSTNAME } from '../../site-config';
   `,
 })
 export class RoomComponent implements OnInit {
-  SERVER_HOSTNAME = SERVER_HOSTNAME;
+  SERVER_HOSTNAME = SERVER_HOST;
 
   game: any;
   board: any;

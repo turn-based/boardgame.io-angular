@@ -23,7 +23,7 @@ import { Router } from '@angular/router';
     }
   `],
 })
-export class CallbackComponent {
+export class AuthCallbackComponent {
   constructor(auth: AuthService, router: Router) {
     auth.handleAuthentication()
       .then(() => {

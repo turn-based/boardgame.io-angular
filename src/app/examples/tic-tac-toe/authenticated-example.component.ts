@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TicTacToeBoardComponent } from './tic-tac-toe-board.component';
 import { HttpClient } from '@angular/common/http';
-import { SERVER_HOSTNAME, SERVER_ORIGIN } from '../../site-config';
+import { SERVER_HOST, SERVER_ORIGIN } from '../../site-config';
 import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
 
 @Component({
@@ -14,7 +14,7 @@ import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
             [game]="TicTacToe"
             [board]="Board"
             [debug]="false"
-            [multiplayer]="{server: SERVER_HOSTNAME}"
+            [multiplayer]="{server: SERVER_HOST}"
             [gameID]="gameID"
             playerID="0"
             [credentials]="players['0'].credentials">
@@ -26,7 +26,7 @@ import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
             [game]="TicTacToe"
             [board]="Board"
             [debug]="false"
-            [multiplayer]="{server: SERVER_HOSTNAME}"
+            [multiplayer]="{server: SERVER_HOST}"
             [gameID]="gameID"
             playerID="1"
             [credentials]="players['1'].credentials">
@@ -49,7 +49,7 @@ import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
   `
 })
 export class AuthenticatedExampleComponent implements OnInit {
-  SERVER_HOSTNAME = SERVER_HOSTNAME;
+  SERVER_HOSTNAME = SERVER_HOST;
 
   TicTacToe = TicTacToe;
   Board = TicTacToeBoardComponent;

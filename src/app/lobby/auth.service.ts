@@ -28,10 +28,12 @@ export class AuthService {
       this.auth0.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {
           this.setSession(authResult);
-          resolve();
+          resolve(authResult);
         } else if (err) {
           console.log(err);
           reject(err);
+        } else {
+          resolve();
         }
       });
     });

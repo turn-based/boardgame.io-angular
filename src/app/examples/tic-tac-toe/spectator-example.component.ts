@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TicTacToeBoardComponent } from './tic-tac-toe-board.component';
-import { SERVER_HOSTNAME } from '../../site-config';
+import { SERVER_HOST } from '../../site-config';
 import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
 
 @Component({
@@ -11,7 +11,7 @@ import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
         <bio-client [game]="TicTacToe"
                     [board]="TicTacToeBoardComponent"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOSTNAME}"
+                    [multiplayer]="{server: SERVER_HOST}"
                     gameID="spectator"
                     playerID="0"></bio-client>
       </div>
@@ -20,7 +20,7 @@ import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
         <bio-client [game]="TicTacToe"
                     [board]="TicTacToeBoardComponent"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOSTNAME}"
+                    [multiplayer]="{server: SERVER_HOST}"
                     gameID="spectator"
                     playerID="1"></bio-client>
       </div>
@@ -29,14 +29,14 @@ import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
         <bio-client [game]="TicTacToe"
                     [board]="TicTacToeBoardComponent"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOSTNAME}"
+                    [multiplayer]="{server: SERVER_HOST}"
                     gameID="spectator"></bio-client>
       </div>
     </div>
   `
 })
 export class SpectatorExampleComponent {
-  SERVER_HOSTNAME = SERVER_HOSTNAME;
+  SERVER_HOSTNAME = SERVER_HOST;
 
   TicTacToe = TicTacToe;
   TicTacToeBoardComponent = TicTacToeBoardComponent;

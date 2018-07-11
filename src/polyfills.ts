@@ -81,3 +81,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 
 // todo remove this if https://github.com/webmodules/blob/pull/14 is resolved
 (window as any).global = window;
+
+// temp fix for weird issue with colyseus
+(window as any).Buffer = require('buffer').Buffer;
