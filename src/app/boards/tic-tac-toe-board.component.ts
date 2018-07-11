@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
+  selector: 'tb-tic-tac-toe-board',
   template: `
     <div>
       <table class="tic-tac-toe-board">
@@ -16,7 +17,7 @@ import { Component, Input } from '@angular/core';
           {{ctx.gameover.winner !== undefined ? 'Winner: ' + ctx.gameover.winner : 'Draw!'}}
         </div>
       </ng-container>
-      <div *ngIf="!isPreview && isMultiplayer && !isConnected">Disconnected</div>
+      <!--<div *ngIf="!isPreview && isMultiplayer && !isConnected">Disconnected</div>-->
     </div>
   `,
   styleUrls: ['./tic-tac-toe-board.component.scss']

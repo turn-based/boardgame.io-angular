@@ -28,7 +28,7 @@ export class Room implements OnDestroy {
   room: ColyseusRoom<any>;
 
   constructor(private colyseusWrapper: ColyseusWrapperService, public name: string, private options?: any) {
-    this.init();
+    // this.init();
   }
 
   private init() {

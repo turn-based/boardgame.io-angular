@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TicTacToeBoardComponent } from './tic-tac-toe-board.component';
+import { TicTacToeBoardComponent } from '../../boards/tic-tac-toe-board.component';
 import { ai } from './ai';
 import { TicTacToe } from '../../../../shared/games/tic-tac-toe';
 

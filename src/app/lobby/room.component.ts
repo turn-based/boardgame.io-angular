@@ -1,36 +1,83 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { ColyseusWrapperService, Room } from './colyseus-wrapper.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { ColyseusService } from './colyseus.service';
+import { Room } from 'colyseus.js';
+import { TicTacToe } from '../../../shared/games/tic-tac-toe';
+
+// getBoardInputs() {
+//   const state = this.client.getState();
+//   return {
+//     ...state,
+//     isMultiplayer: this.multiplayer !== undefined,
+//     moves: this.client.moves,
+//     events: this.client.events,
+//     gameID: this.gameID,
+//     playerID: this.playerID,
+//     reset: this.client.reset,
+//     undo: this.client.undo,
+//     redo: this.client.redo,
+//   };
 @Component({
   template: `
-    <h3>roomId = {{room?.room?.id}}</h3>
-    <div>invite others <a href="{{origin}}/rooms/{{roomId}}">{{origin}}/rooms/{{room?.room?.id}}</a></div>
-    <div>{{ room?.room?.name }} {{ room?.room?.id }}</div>
+    <h3>roomId = {{room.id}}</h3>
 
-    <div>{{ room?.room?.options | json }}</div>
+    <tb-tic-tac-toe-board *ngIf="room.state?.G"
+                          [G]="room.state.G"
+                          [ctx]="room.state.ctx"
+                          playerID="0"
+                          [isActive]="isActive('0')"
+                          [moves]="movesP0"
+    >
+    </tb-tic-tac-toe-board>
 
-    <div>{{ room?.room?.state | json }}</div>
+    <tb-tic-tac-toe-board *ngIf="room.state?.G"
+                          [G]="room.state.G"
+                          [ctx]="room.state.ctx"
+                          playerID="1"
+                          [isActive]="isActive('1')"
+                          [moves]="movesP1"
+    ></tb-tic-tac-toe-board>
+
+
+    <div>{{room.state | json }}</div>
   `,
 })
 export class RoomComponent {
-  roomId: string;
   room: Room;
-  origin = location.origin;
 
-  constructor(route: ActivatedRoute, colyseus: ColyseusWrapperService) {
-    route.paramMap
-      .pipe(
-        map(paramMap => paramMap.get('roomId')),
-      ).subscribe(roomId => {
-      if (this.room == null) {
-        this.room = colyseus.join(roomId);
-      } else if (this.room.room.id !== roomId) {
-        this.room.room.leave();
-        this.room = colyseus.join(roomId);
-      }
+  movesP0: { clickCell: any };
+  movesP1: { clickCell: any };
+
+  constructor(route: ActivatedRoute, router: Router, colyseus: ColyseusService) {
+    this.room = colyseus.getConnectedRoom(route.snapshot.paramMap.get('roomId'));
+
+    if (this.room == null) {
+      router.navigate(['test']);
+    }
+
+    this.movesP0 = {
+      clickCell: RoomComponent.prototype.action.bind(this, '0'),
+    };
+    this.movesP1 = {
+      clickCell: RoomComponent.prototype.action.bind(this, '1'),
+    };
+  }
+
+  action(playerID: string, cell: number) {
+    this.room.send({
+      action:
+        {
+          type: 'MAKE_MOVE', payload: {type: 'clickCell', args: [cell], playerID}
+        }
     });
   }
 
+  isActive(playerID: string) {
+    return this.room.state.ctx.gameover === undefined && TicTacToe.flow.canPlayerMakeMove(
+      this.room.state.G,
+      this.room.state.ctx,
+      playerID
+    );
+  }
 }

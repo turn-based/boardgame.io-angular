@@ -7,19 +7,27 @@ import { AuthService } from './auth.service';
 import { MaterialModule } from '../material.module';
 import { PrettyMsPipe } from './pretty-ms.pipe';
 import { RoomComponent } from './room.component';
+import { TestComponent } from './test.component';
+import { BoardsModule } from '../boards/boards.module';
 
 @NgModule({
   declarations: [
     LobbyComponent,
     RoomComponent,
     AuthCallbackComponent,
+    TestComponent,
     PrettyMsPipe,
   ],
   imports: [
     CommonModule,
     MaterialModule,
 
+    BoardsModule,
     RouterModule.forChild([
+      {
+        path: 'test',
+        component: TestComponent,
+      },
       {
         path: 'lobby',
         component: LobbyComponent,

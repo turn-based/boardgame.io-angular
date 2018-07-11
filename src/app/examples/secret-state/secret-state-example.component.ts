@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Game, PlayerView } from 'boardgame.io/dist/core';
-import { SERVER_HOST } from '../../site-config';
+import { SERVER_ORIGIN } from '../../site-config';
 
 const SecretState = Game({
   name: 'secret-state',
@@ -47,7 +47,7 @@ export class SecretStateBoardComponent {
                     [numPlayers]="3"
                     [board]="SecretStateBoardComponent"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOST}"
+                    [multiplayer]="{server: SERVER_ORIGIN}"
                     gameID="secret-state"
                     playerID="0">
         </bio-client>
@@ -58,7 +58,7 @@ export class SecretStateBoardComponent {
                     [numPlayers]="3"
                     [board]="SecretStateBoardComponent"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOST}"
+                    [multiplayer]="{server: SERVER_ORIGIN}"
                     gameID="secret-state"
                     playerID="1">
         </bio-client>
@@ -69,7 +69,7 @@ export class SecretStateBoardComponent {
                     [numPlayers]="3"
                     [board]="SecretStateBoardComponent"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOST}"
+                    [multiplayer]="{server: SERVER_ORIGIN}"
                     gameID="secret-state"
                     playerID="2">
         </bio-client>
@@ -80,7 +80,7 @@ export class SecretStateBoardComponent {
                     [numPlayers]="3"
                     [board]="SecretStateBoardComponent"
                     [debug]="false"
-                    [multiplayer]="{server: SERVER_HOST}"
+                    [multiplayer]="{server: SERVER_ORIGIN}"
                     gameID="secret-state">
         </bio-client>
       </div>
@@ -88,7 +88,7 @@ export class SecretStateBoardComponent {
   `
 })
 export class SecretStateExampleComponent {
-  SERVER_HOSTNAME = SERVER_HOST;
+  SERVER_ORIGIN = SERVER_ORIGIN;
 
   SecretState = SecretState;
   SecretStateBoardComponent = SecretStateBoardComponent;

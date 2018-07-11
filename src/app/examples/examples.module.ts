@@ -12,12 +12,12 @@ import { SpectatorExampleComponent } from './tic-tac-toe/spectator-example.compo
 import { BoardgameIoModule } from 'boardgame.io-angular';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { TicTacToeBoardComponent } from './tic-tac-toe/tic-tac-toe-board.component';
 import { NgxInitModule } from 'ngx-init';
 import { PhasesBoardComponent, PhasesExampleComponent } from './phases/phases-example.component';
 import { SecretStateBoardComponent, SecretStateExampleComponent } from './secret-state/secret-state-example.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { RoomComponent } from './lobby/room.component';
+import { BoardsModule } from '../boards/boards.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,6 @@ import { RoomComponent } from './lobby/room.component';
     LobbyComponent,
     RoomComponent,
 
-    TicTacToeBoardComponent,
     PhasesBoardComponent,
     SecretStateBoardComponent
   ],
@@ -42,6 +41,7 @@ import { RoomComponent } from './lobby/room.component';
     FormsModule,
     HttpClientModule,
 
+    BoardsModule,
     NgxInitModule,
     MaterialModule,
     BoardgameIoModule,
@@ -130,7 +130,6 @@ import { RoomComponent } from './lobby/room.component';
     ExamplesComponent,
   ],
   entryComponents: [
-    TicTacToeBoardComponent,
     PhasesBoardComponent,
     SecretStateBoardComponent,
   ]
