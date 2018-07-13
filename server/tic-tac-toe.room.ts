@@ -7,6 +7,11 @@ import { createStore } from 'redux';
 export class TicTacToeRoom extends Room<any> {
   store: any;
 
+  onAuth(options) {
+    console.log(options);
+    return true;
+  }
+
   onInit(options) {
     console.log('TicTacToeRoom created!', options);
 

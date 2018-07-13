@@ -4,10 +4,22 @@ import { Router } from '@angular/router';
 
 @Component({
   template: `
-    readyState {{colyseus.readyState}}
-
-    <button (click)="play()" [disabled]="!colyseus.isReady">play</button>
+    <div class="mat-elevation-z2" style="background: white; padding: 24px;">
+      readyState {{colyseus.readyState}}
+      
+      <button mat-stroked-button (click)="play()" [disabled]="!colyseus.isReady">play</button>
+    </div>
   `,
+  styles: [`
+    :host {
+      background: #005661;
+      display: block;
+      box-sizing: border-box;
+      height: 100vh;
+      width: 100vw;
+      padding: 16px;
+    }
+  `]
 })
 export class TestComponent {
 
