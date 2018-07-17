@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Auth0UserProfile, WebAuth } from 'auth0-js';
+import { of, Subscription, timer } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
   userProfilePromise: Promise<Auth0UserProfile>;
   private auth0: WebAuth;
   userProfile: Auth0UserProfile;
+
+  private refreshSub: Subscription;
 
   constructor() {
     this.auth0 = new WebAuth({
@@ -69,6 +72,40 @@ export class AuthService {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
+
+    this.scheduleRenewal();
+  }
+
+  public renewToken() {
+    this.auth0.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.setSession(result);
+      }
+    });
+  }
+
+  public scheduleRenewal() {
+    if (!this.isAuthenticated()) { return; }
+    this.unscheduleRenewal();
+
+    const expiresAt = JSON.parse(window.localStorage.getItem('expires_at'));
+
+    // Once the delay time from above is
+    // reached, get a new JWT and schedule
+    this.refreshSub = timer(expiresAt - Date.now()).subscribe(
+      () => {
+        this.renewToken();
+        this.scheduleRenewal();
+      }
+    );
+  }
+
+  public unscheduleRenewal() {
+    if (this.refreshSub) {
+      this.refreshSub.unsubscribe();
+    }
   }
 
   public logout() {
@@ -76,13 +113,15 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    delete this.userProfilePromise;
+    this.unscheduleRenewal();
   }
 
   public isAuthenticated(): boolean {
     // Check whether the current time is past the
     // access token's expiry time
     const expiresAt = JSON.parse(localStorage.getItem('expires_at') || '{}');
-    return new Date().getTime() < expiresAt;
+    return Date.now() < expiresAt;
   }
 
 }

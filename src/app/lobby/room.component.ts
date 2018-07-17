@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ColyseusService } from './colyseus.service';
@@ -22,18 +22,18 @@ import { TicTacToe } from '../../../shared/games/tic-tac-toe';
   template: `
     <h3>roomId = {{room.id}}</h3>
 
-    <tb-tic-tac-toe-board *ngIf="room.state?.G"
-                          [G]="room.state.G"
-                          [ctx]="room.state.ctx"
+    <tb-tic-tac-toe-board *ngIf="room.state?.bgio.G"
+                          [G]="room.state.bgio.G"
+                          [ctx]="room.state.bgio.ctx"
                           playerID="0"
                           [isActive]="isActive('0')"
                           [moves]="movesP0"
     >
     </tb-tic-tac-toe-board>
 
-    <tb-tic-tac-toe-board *ngIf="room.state?.G"
-                          [G]="room.state.G"
-                          [ctx]="room.state.ctx"
+    <tb-tic-tac-toe-board *ngIf="room.state?.bgio.G"
+                          [G]="room.state.bgio.G"
+                          [ctx]="room.state.bgio.ctx"
                           playerID="1"
                           [isActive]="isActive('1')"
                           [moves]="movesP1"
@@ -43,7 +43,7 @@ import { TicTacToe } from '../../../shared/games/tic-tac-toe';
     <div>{{room.state | json }}</div>
   `,
 })
-export class RoomComponent {
+export class RoomComponent implements OnDestroy {
   room: Room;
 
   movesP0: { clickCell: any };
@@ -74,10 +74,14 @@ export class RoomComponent {
   }
 
   isActive(playerID: string) {
-    return this.room.state.ctx.gameover === undefined && TicTacToe.flow.canPlayerMakeMove(
-      this.room.state.G,
-      this.room.state.ctx,
+    return this.room.state.bgio.ctx.gameover === undefined && TicTacToe.flow.canPlayerMakeMove(
+      this.room.state.bgio.G,
+      this.room.state.bgio.ctx,
       playerID
     );
+  }
+
+  ngOnDestroy() {
+    this.room.leave();
   }
 }
