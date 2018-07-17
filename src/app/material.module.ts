@@ -5,6 +5,7 @@ import {
   MatDividerModule,
   MatIconModule,
   MatListModule,
+  MatMenuModule,
   MatProgressBarModule,
   MatSidenavModule,
   MatToolbarModule
@@ -23,7 +24,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSidenavModule,
     MatListModule,
     MatProgressBarModule,
-
+    MatMenuModule,
     FlexLayoutModule,
   ],
 })

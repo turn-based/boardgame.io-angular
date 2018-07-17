@@ -22,7 +22,7 @@ import { TicTacToe } from '../../../shared/games/tic-tac-toe';
   template: `
     <h3>roomId = {{room.id}}</h3>
 
-    <tb-tic-tac-toe-board *ngIf="room.state?.bgio.G"
+    <tb-tic-tac-toe-board *ngIf="room?.state?.bgio?.G"
                           [G]="room.state.bgio.G"
                           [ctx]="room.state.bgio.ctx"
                           playerID="0"
@@ -31,7 +31,7 @@ import { TicTacToe } from '../../../shared/games/tic-tac-toe';
     >
     </tb-tic-tac-toe-board>
 
-    <tb-tic-tac-toe-board *ngIf="room.state?.bgio.G"
+    <tb-tic-tac-toe-board *ngIf="room?.state?.bgio?.G"
                           [G]="room.state.bgio.G"
                           [ctx]="room.state.bgio.ctx"
                           playerID="1"

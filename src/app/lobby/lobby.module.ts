@@ -7,12 +7,17 @@ import { MaterialModule } from '../material.module';
 import { RoomComponent } from './room.component';
 import { LobbyComponent } from './lobby.component';
 import { BoardsModule } from '../boards/boards.module';
+import { Room2Component } from './room2.component';
+import { RoomResolver } from './room.resolver';
+import { App2Component } from './app2.component';
 
 @NgModule({
   declarations: [
     RoomComponent,
+    Room2Component,
     AuthCallbackComponent,
     LobbyComponent,
+    App2Component,
   ],
   imports: [
     CommonModule,
@@ -29,11 +34,24 @@ import { BoardsModule } from '../boards/boards.module';
       }, {
         path: 'rooms/:roomId',
         component: RoomComponent,
+      }, {
+        path: 'app2',
+        component: App2Component,
+        children: [
+          {
+            path: 'rooms/:roomId',
+            component: Room2Component,
+            resolve: {
+              room: RoomResolver
+            }
+          }
+        ]
       }
     ])
   ],
   providers: [
     AuthService,
+    RoomResolver,
   ]
 
 })
