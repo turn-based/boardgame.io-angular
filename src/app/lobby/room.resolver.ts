@@ -43,7 +43,7 @@ export class RoomResolver implements Resolve<IRoom> {
             picture: 'https://api.adorable.io/avatars/162/Nancy@adorable.png',
           },
           color: 'rgb(235,224,74)',
-          isCurrent: true,
+          isCurrent: false,
           isMe: true,
         },
         {
@@ -52,7 +52,7 @@ export class RoomResolver implements Resolve<IRoom> {
             picture: 'https://api.adorable.io/avatars/162/abott@adorable.png',
           },
           color: 'rgb(0,213,69)',
-          isCurrent: false,
+          isCurrent: true,
           isMe: false,
         },
       ]

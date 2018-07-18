@@ -10,14 +10,17 @@ import { BoardsModule } from '../boards/boards.module';
 import { Room2Component } from './room2.component';
 import { RoomResolver } from './room.resolver';
 import { App2Component } from './app2.component';
+import { Lobby2Component } from './lobby2.component';
 
 @NgModule({
   declarations: [
     RoomComponent,
-    Room2Component,
     AuthCallbackComponent,
     LobbyComponent,
+
+    Room2Component,
     App2Component,
+    Lobby2Component,
   ],
   imports: [
     CommonModule,
@@ -38,6 +41,10 @@ import { App2Component } from './app2.component';
         path: 'app2',
         component: App2Component,
         children: [
+          {
+            path: 'lobby',
+            component: Lobby2Component,
+          },
           {
             path: 'rooms/:roomId',
             component: Room2Component,

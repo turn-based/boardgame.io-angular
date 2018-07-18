@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface IProfile {
   nickname: string;
@@ -29,7 +29,7 @@ export interface IRoom {
   template: `
     <div fxLayout fxFlexFill fxLayoutAlign="center center">
       <mat-drawer-container *ngIf="room" class="mat-elevation-z4"
-                            style="border: 3px solid #fa4f4f; min-width: 920px; height: 80%; width: 80%;">
+                            style="border: 3px solid #fa4f4f; min-width: 920px; min-height: 486px; height: 80%; width: 80%;">
         <mat-drawer style="border-left: 2px solid #fa4f4f; min-width: 220px;" mode="side" position="end" opened fxLayout="column"
                     fxLayoutAlign="end">
           <div style="height: 100px; background-color: #fa4f4f; color: white; position: relative;" fxLayout="column" fxLayoutAlign="end">
@@ -71,13 +71,13 @@ export interface IRoom {
           </div>
           <div fxLayout="column" fxLayoutGap="8px" style="margin: 12px">
             <button mat-stroked-button (click)="notImplement()">View History</button>
-            <button mat-stroked-button (click)="notImplement()">Leave</button>
+            <button mat-stroked-button (click)="leave()">Leave</button>
           </div>
         </mat-drawer>
         <mat-drawer-content fxLayout fxLayoutAlign="center center" style="background-color: white;">
           <ng-container [ngSwitch]="room.state">
             <div *ngSwitchCase="RoomState.PLAYING" class="mat-elevation-z2" style="height: 400px; width: 600px;">
-              Main content*ngIf="room" class="mat-elevation-z4" style="position: relative; min-width: 920px; height: 80%; width: 80%;"
+              playing
             </div>
             <ng-container *ngSwitchCase="RoomState.WAITING_FOR_PLAYERS">
               <strong style="color: rgb(250, 79, 79);">Waiting for players</strong>
@@ -98,7 +98,8 @@ export class Room2Component implements OnInit {
   room: IRoom;
   RoomState = RoomState;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,
+              private router: Router) {
 
   }
 
@@ -111,5 +112,9 @@ export class Room2Component implements OnInit {
 
   notImplement() {
     console.warn('not implemented');
+  }
+
+  leave() {
+    this.router.navigate(['../../lobby'], {relativeTo: this.route});
   }
 }
