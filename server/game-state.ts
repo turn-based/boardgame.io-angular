@@ -1,5 +1,3 @@
-import { EntityMap } from 'colyseus';
-
 export interface UserProfile {
   nickname: string;
   picture: string;
@@ -11,11 +9,11 @@ export class Player {
 }
 
 export class GameState {
-  players: EntityMap<Player> = {};
+  players: { [entityId: string]: Player; } = {};
 
   addPlayer(client, user) {
     if (user) {
-      this.players[user.sub] = new Player({nickname: user.nickname, picture: user.picture} );
+      this.players[user.sub] = new Player({nickname: user.nickname, picture: user.picture});
     } else {
       this.players[client.id] = new Player();
     }

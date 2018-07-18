@@ -53,7 +53,7 @@ export class RoomComponent implements OnDestroy {
     this.room = colyseus.getConnectedRoom(route.snapshot.paramMap.get('roomId'));
 
     if (this.room == null) {
-      router.navigate(['test']);
+      router.navigate(['lobby']);
     }
 
     this.movesP0 = {

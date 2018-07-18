@@ -48,7 +48,7 @@ export const TicTacToe = Game({
       const cells = [...G.cells];
 
       if (cells[id] === null) {
-        cells[id] = ctx.currentPlayer;
+        cells[id] = ctx.currentTurn;
       }
 
       return { ...G, cells };
@@ -60,7 +60,7 @@ export const TicTacToe = Game({
 
     endGameIf: (G, ctx) => {
       if (IsVictory(G.cells)) {
-        return { winner: ctx.currentPlayer };
+        return { winner: ctx.currentTurn };
       }
       // noinspection TsLint
       if (G.cells.filter(c => c === null).length == 0) {

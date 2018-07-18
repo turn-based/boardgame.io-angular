@@ -29,6 +29,7 @@
     "buffer": "^5.1.0",
     "colyseus.js": "^0.9.9",
     "core-js": "^2.5.4",
+    "ng-animate": "^0.3.3",
     "ng-dynamic-component": "^3.0.0",
     "ngx-init": "^0.1.0",
     "pretty-ms": "^3.2.0",

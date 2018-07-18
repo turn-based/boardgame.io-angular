@@ -1,36 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-export interface IProfile {
-  nickname: string;
-  picture: string;
-}
-
-export interface IPlayer {
-  color: string;
-  isCurrent: boolean;
-  isMe: boolean;
-  profile: IProfile;
-}
-
-export enum RoomState {
-  PLAYING,
-  WAITING_FOR_PLAYERS,
-}
-
-export interface IRoom {
-  id: string;
-  name: string;
-  players: IPlayer[];
-  state: RoomState;
-}
+import { fadeInUp } from './fade-in-up.animation';
+import { IRoom, ROOM_TOKEN } from './types';
 
 @Component({
+  animations: [
+    fadeInUp,
+  ],
   template: `
     <div fxLayout fxFlexFill fxLayoutAlign="center center">
-      <mat-drawer-container *ngIf="room" class="mat-elevation-z4"
+      <mat-drawer-container @fadeInUp
+                            *ngIf="room" class="mat-elevation-z4"
                             style="border: 3px solid #fa4f4f; min-width: 920px; min-height: 486px; height: 80%; width: 80%;">
-        <mat-drawer style="border-left: 2px solid #fa4f4f; min-width: 220px;" mode="side" position="end" opened fxLayout="column"
+        <mat-drawer class="mat-elevation-z2" style="min-width: 220px;" mode="side" position="end" opened fxLayout="column"
                     fxLayoutAlign="end">
           <div style="height: 100px; background-color: #fa4f4f; color: white; position: relative;" fxLayout="column" fxLayoutAlign="end">
             <button mat-icon-button [matMenuTriggerFor]="menu" style="position: absolute; top: 6px; right: 4px;">
@@ -47,21 +29,21 @@ export interface IRoom {
               <small style="position: absolute; bottom: 48px; left: 14px;">Now playing...</small>
             </em>
           </div>
-          <div fxFlex style="margin: 0 6px;" fxLayout="column">
+          <div fxFlex style="margin: 0 12px;" fxLayout="column">
             <mat-list dense style="margin-bottom: 10px;">
               <h3 matSubheader>Players</h3>
               <mat-list-item
-                *ngFor="let player of room.players"
-                [ngClass]="{'mat-elevation-z1': player.isCurrent}"
+                *ngFor="let player of room.state.players"
+                [ngClass]="{'mat-elevation-z1': player.id === room.state.currentTurn}"
               >
                 <img matListAvatar [src]="player.profile.picture" style="border: 2px solid;" [ngStyle]="{'border-color': player.color}">
                 <h3 matLine>
                   {{player.profile.nickname}}
                 </h3>
-                <p matLine [ngSwitch]="player.isCurrent" class="player-status">
+                <p matLine [ngSwitch]="player.id === room.state.currentTurn" class="player-status">
                   <!-- else wait... -->
                   <span *ngSwitchCase="false" style="color: #c3c3c3">Waiting...</span>
-                  <ng-container *ngSwitchCase="true" [ngSwitch]="player.isMe">
+                  <ng-container *ngSwitchCase="true" [ngSwitch]="player.id === room.sessionId">
                     <span *ngSwitchCase="false" class="current-player">Current Player</span>
                     <span *ngSwitchCase="true" class="your-turn">Your Turn</span>
                   </ng-container>
@@ -75,11 +57,11 @@ export interface IRoom {
           </div>
         </mat-drawer>
         <mat-drawer-content fxLayout fxLayoutAlign="center center" style="background-color: white;">
-          <ng-container [ngSwitch]="room.state">
-            <div *ngSwitchCase="RoomState.PLAYING" class="mat-elevation-z2" style="height: 400px; width: 600px;">
-              playing
+          <ng-container [ngSwitch]="room.state.currentTurn == null">
+            <div *ngSwitchCase="false"  style="height: 400px; width: 600px;">
+              <ng-container *ngComponentOutlet="BoardComponent; injector: roomInjector;"></ng-container>
             </div>
-            <ng-container *ngSwitchCase="RoomState.WAITING_FOR_PLAYERS">
+            <ng-container *ngSwitchCase="true">
               <strong style="color: rgb(250, 79, 79);">Waiting for players</strong>
               <div class="dot-wave">
                 <span class="dot"></span>
@@ -94,20 +76,37 @@ export interface IRoom {
   `,
   styleUrls: ['./room2.component.scss'],
 })
-export class Room2Component implements OnInit {
+export class Room2Component implements OnInit, OnDestroy {
   room: IRoom;
-  RoomState = RoomState;
+  BoardComponent: any;
+  roomInjector: Injector;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private injector: Injector,
+  ) {
 
   }
 
   ngOnInit() {
     this.route.data
-      .subscribe((data: { room: IRoom }) => {
-        this.room = data.room;
+      .subscribe((data: { room: { room: IRoom, BoardComponent: any } }) => {
+        if (this.room) {
+          this.room.leave();
+        }
+
+        this.room = data.room.room; // reusing the room resolver for now todo move board somewhere else
+
+        this.roomInjector = Injector.create({providers: [{provide: ROOM_TOKEN, useValue: this.room}], parent: this.injector});
+        this.BoardComponent = data.room.BoardComponent;
       });
+  }
+
+  ngOnDestroy() {
+    if (this.room) {
+      this.room.leave();
+    }
   }
 
   notImplement() {
