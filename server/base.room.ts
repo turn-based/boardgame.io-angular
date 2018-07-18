@@ -126,7 +126,7 @@ export class BaseRoom extends Room {
     const idx = this.state.players.findIndex(player => player.id = client.sessionId);
     this.state.players = [...this.state.players.slice(0, idx), ...this.state.players.slice(idx + 1)];
 
-    if (this.state.players.length > 0) {
+    if (this.state.players.length > 0 && !this.state.winner && !this.state.draw) {
       this.state.winner = this.state.players[0].id;
     }
   }

@@ -12,28 +12,17 @@ import { IMinimalState, IRoom, ROOM_TOKEN } from '../lobby/types';
             </ng-container>
           </tr>
         </table>
-        <div *ngIf="room.state.winner">
-          <strong>Winner: </strong>{{getWinnerNickName()}}!
-        </div>
-        <div *ngIf="room.state.draw">
-          Draw!
-        </div>
       </div>
     </div>
   `,
   styleUrls: ['./tic-tac-toe-board.component.scss'],
 })
 export class TicTacToeBoard2Component {
-  constructor(@Inject(ROOM_TOKEN) public room: IRoom<IMinimalState & { board: number[][], winner: string, draw: boolean }>) {
+  constructor(@Inject(ROOM_TOKEN) public room: IRoom<IMinimalState & { board: number[][] }>) {
 
   }
 
   isCellActive(cell) {
     return !this.room.state.winner &&  !this.room.state.draw && this.room.sessionId === this.room.state.currentTurn && cell === 0;
-  }
-
-  getWinnerNickName() {
-    const winner = this.room.state.players.find(player => player.id === this.room.state.winner);
-    return winner.profile.nickname;
   }
 }
