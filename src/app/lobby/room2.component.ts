@@ -3,10 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fadeInUp } from './fade-in-up.animation';
 import { IRoom, ROOM_TOKEN } from './types';
 import { ColyseusService } from './colyseus.service';
+import { transition, trigger, useAnimation } from '@angular/animations';
+import { fadeIn } from 'ng-animate';
 
 @Component({
   animations: [
     fadeInUp,
+    trigger('fadeIn', [
+      transition(':enter', useAnimation(fadeIn, {params: {timing: '0.5'}}))
+    ])
   ],
   template: `
     <div fxLayout fxFlexFill fxLayoutAlign="center center">
@@ -36,17 +41,22 @@ import { ColyseusService } from './colyseus.service';
               <h3 matSubheader>Players</h3>
               <mat-list-item
                 *ngFor="let player of room.state.players"
-                [ngClass]="{'mat-elevation-z1': player.id === room.state.currentTurn}"
+                [ngClass]="{'shadow-pop-tr': player.id === room.state.currentTurn}"
               >
                 <img matListAvatar [src]="player.profile.picture" style="border: 2px solid;" [ngStyle]="{'border-color': player.color}">
                 <h3 matLine>
                   {{player.profile.nickname}}
                 </h3>
-                <p matLine *ngIf="!isDone()" [ngSwitch]="player.id === room.state.currentTurn" class="player-status">
-                  <span *ngSwitchCase="false" style="color: #c3c3c3">Waiting...</span>
-                  <ng-container *ngSwitchCase="true" [ngSwitch]="player.id === room.sessionId">
-                    <span *ngSwitchCase="false" class="current-player">Current Player</span>
-                    <span *ngSwitchCase="true" class="your-turn">Your Turn</span>
+                <p matLine [ngSwitch]="isDone()" class="player-status">
+                  <span *ngSwitchCase="true" class="current-player">
+                    {{player.id === room.state.winner ? (player.id === room.sessionId ? 'You Won!' : 'Winner') : '&nbsp;'}}
+                  </span>
+                  <ng-container *ngSwitchCase="false" [ngSwitch]="player.id === room.state.currentTurn">
+                    <span *ngSwitchCase="false" style="color: #c3c3c3">Waiting...</span>
+                    <ng-container *ngSwitchCase="true" [ngSwitch]="player.id === room.sessionId">
+                      <span *ngSwitchCase="false" class="current-player">Current Player</span>
+                      <span *ngSwitchCase="true" class="your-turn">Your Turn</span>
+                    </ng-container>
                   </ng-container>
                 </p>
               </mat-list-item>
@@ -67,7 +77,7 @@ import { ColyseusService } from './colyseus.service';
                               ">
           <ng-container [ngSwitch]="room.state.currentTurn == null">
             <div *ngSwitchCase="false" style="height: 400px; width: 600px;">
-              <div *ngIf="isDone()"
+              <div *ngIf="isDone()" @fadeIn
                    style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; color: white; background: rgba(0,0,0,0.8);"
                    fxLayout fxLayoutAlign="center center">
                 <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
@@ -79,7 +89,7 @@ import { ColyseusService } from './colyseus.service';
                       Draw!
                     </ng-container>
                   </div>
-                  <button mat-stroked-button color="accent" (click)="playAgain()">Play Again</button>
+                  <button mat-raised-button color="accent" (click)="playAgain()">Play Again</button>
                 </div>
               </div>
               <ng-container *ngComponentOutlet="BoardComponent; injector: roomInjector;"></ng-container>
@@ -144,7 +154,7 @@ export class Room2Component implements OnInit, OnDestroy {
   }
 
   isDone() {
-    return this.room.state.winner || this.room.state.draw;
+    return this.room.state.winner || this.room.state.draw ? true : false;
   }
 
   getWinnerNickName() {

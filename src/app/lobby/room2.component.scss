@@ -31,32 +31,13 @@ div.dot-wave {
   }
 }
 
-@keyframes opacityPulse {
-  89% {
-    opacity: 1;
-  }
-  91% {
-    opacity: 0;
-  }
-  94% {
-    opacity: 1;
-  }
-  97% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .player-status {
   letter-spacing: 0.1em;
   font-style: italic;
 
   .your-turn {
     color: #46ce26;
-    animation: opacityPulse 6s ease-out;
-    animation-iteration-count: infinite;
+    animation: 6s ease-out infinite opacityPulse;
     opacity: 1;
   }
 
@@ -66,4 +47,8 @@ div.dot-wave {
   }
 }
 
+
+.shadow-pop-tr {
+  animation: shadow-pop-tr 0.3s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;
+}
 
