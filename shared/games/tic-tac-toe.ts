@@ -62,10 +62,11 @@ export const TicTacToe = Game({
       if (IsVictory(G.cells)) {
         return { winner: ctx.currentPlayer };
       }
-      // noinspection TsLint
-      if (G.cells.filter(c => c === null).length == 0) {
+      if (G.cells.every(c => c !== null)) {
         return { draw: true };
       }
     },
+
+    endGame: true,
   },
 });

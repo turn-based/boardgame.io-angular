@@ -34,11 +34,8 @@ export class BaseRoom extends Room {
 
     this.setState({
       bgio: this.store.getState(),
-      currentTurn: null,
+      isReady: false,
       players: [],
-      cells: Array(9).fill(null),
-      winner: null,
-      draw: null
     });
   }
 
@@ -48,7 +45,7 @@ export class BaseRoom extends Room {
     this.state.players.push({...MOCK_PLAYERS[idx], idx, id: client.sessionId});
 
     if (this.clients.length === 2) {
-      this.state.currentTurn = this.state.players[0].id;
+      this.state.isReady = true;
 
       this.lock();
     }
@@ -59,43 +56,18 @@ export class BaseRoom extends Room {
       this.store.dispatch(data.action);
       this.state.bgio = this.store.getState();
     }
-
-    if (this.state.winner || this.state.draw) {
-      return false;
-    }
-
-    const cellIdx = data.action.payload.args;
-    if (client.sessionId === this.state.currentTurn) {
-      if (this.state.cells[cellIdx] == null) {
-        const move = (client.playerIndex === '0') ? 'x' : 'o';
-        this.state.cells[cellIdx] = move;
-
-        if (IsVictory(this.state.cells)) {
-          this.state.winner = client.sessionId;
-
-        } else if (this.checkBoardComplete()) {
-          this.state.draw = true;
-
-        } else {
-          // switch turn
-          const otherPlayerIndex = (client.playerIndex === '0') ? 1 : 0;
-
-          this.state.currentTurn = this.state.players[otherPlayerIndex].id;
-        }
-      }
-    }
-  }
-
-  checkBoardComplete() {
-    return this.state.cells.every(item => item !== null);
   }
 
   onLeave(client) {
     const idx = this.state.players.findIndex(player => player.id = client.sessionId);
     this.state.players = [...this.state.players.slice(0, idx), ...this.state.players.slice(idx + 1)];
 
-    if (this.state.players.length > 0 && !this.state.winner && !this.state.draw) {
-      this.state.winner = this.state.players[0].id;
+    if (this.state.players.length > 0 && this.state.bgio.ctx.gameover === undefined) {
+      this.store.dispatch({
+        type: 'GAME_EVENT',
+        payload: { type: 'endGame', args: { winner: this.state.players[0].idx } },
+      });
+      this.state.bgio = this.store.getState();
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { IRoom, ROOM_TOKEN } from '../lobby/types';
+import { GAME_TOKEN, IRoom, ROOM_TOKEN } from '../lobby/types';
 
 export interface ITicTacToeMoves {
   clickCell(args: { x: number, y: number }): void;
@@ -13,13 +13,19 @@ export abstract class Board<T, U> {
   }
 
   get isActive() {
-    return this.room.state.bgio.ctx.gameover === undefined && this.room.sessionId === this.room.state.currentTurn;
+    return this.room.state.bgio.ctx.gameover === undefined &&
+      this.Game.flow.canPlayerMakeMove(
+        this.room.state.bgio.G,
+        this.room.state.bgio.ctx,
+        this.room.state.players.find(player => player.id === this.room.sessionId).idx
+      );
     // todo user TicTacToe.flow.canPlayerMakeMove(this.room.state.bgio.G, this.room.state.bgio.ctx, playerID)
     //  (instead of this.room.sessionId === this.room.state.currentTurn)
   }
 
   constructor(
-    @Inject(ROOM_TOKEN) public room: IRoom<T>
+    @Inject(ROOM_TOKEN) public room: IRoom<T>,
+    @Inject(GAME_TOKEN) public Game: any,
   ) {
     this.moves = new Proxy(Object.create(null), {
       get: (target, prop) => (args) => {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, Input, Output } from '@angular/core';
 import { fadeInUp } from './fade-in-up.animation';
-import { IRoom, ROOM_TOKEN } from './types';
+import { GAME_TOKEN, IRoom, ROOM_TOKEN } from './types';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
 
@@ -75,8 +75,8 @@ import { fadeIn } from 'ng-animate';
                                 inset 0 0 5px 2px rgba(0,0,0,.14),
                                 inset 0 0 10px 1px rgba(0,0,0,.12);
                               ">
-          <ng-container [ngSwitch]="room.state.currentTurn == null">
-            <div *ngSwitchCase="false" style="height: 400px; width: 600px;">
+          <ng-container [ngSwitch]="room.state.isReady">
+            <div *ngSwitchCase="true" style="height: 400px; width: 600px;">
               <div *ngIf="isDone()" @fadeIn
                    style="position: absolute; height: 100%; width: 100%; top: 0; left: 0; color: white; background: rgba(0,0,0,0.8);"
                    fxLayout fxLayoutAlign="center center">
@@ -94,7 +94,7 @@ import { fadeIn } from 'ng-animate';
               </div>
               <ng-container *ngComponentOutlet="BoardComponent; injector: injectorWithRoom;"></ng-container>
             </div>
-            <ng-container *ngSwitchCase="true">
+            <ng-container *ngSwitchCase="false">
               <strong style="color: rgb(250, 79, 79);">Waiting for players</strong>
               <div class="dot-wave">
                 <span class="dot"></span>
@@ -124,7 +124,10 @@ export class Room2Component {
     if (room != null) {
       this._room = room;
 
-      this.injectorWithRoom = Injector.create({providers: [{provide: ROOM_TOKEN, useValue: this._room}], parent: this.injector});
+      this.injectorWithRoom = Injector.create({providers: [
+        {provide: ROOM_TOKEN, useValue: this._room},
+        {provide: GAME_TOKEN, useValue: this.Game}
+      ], parent: this.injector});
     }
   }
 

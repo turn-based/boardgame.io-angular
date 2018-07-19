@@ -14,10 +14,8 @@ export interface IPlayer {
 }
 
 export interface IRoomState<T> {
-  currentTurn: string;
   players: IPlayer[];
-  winner: string;
-  draw: boolean;
+  isReady: boolean;
 
   bgio: {
     G: T,
@@ -39,3 +37,5 @@ export interface IRoom<T = any> {
 }
 
 export const ROOM_TOKEN = new InjectionToken<IRoom>('ROOM');
+
+export const GAME_TOKEN = new InjectionToken<any>('GAME');
