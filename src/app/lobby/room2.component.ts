@@ -1,12 +1,11 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@angular/core';
 import { fadeInUp } from './fade-in-up.animation';
 import { IRoom, ROOM_TOKEN } from './types';
-import { ColyseusService } from './colyseus.service';
 import { transition, trigger, useAnimation } from '@angular/animations';
 import { fadeIn } from 'ng-animate';
 
 @Component({
+  selector: 'tb-room',
   animations: [
     fadeInUp,
     trigger('fadeIn', [
@@ -63,8 +62,8 @@ import { fadeIn } from 'ng-animate';
             </mat-list>
           </div>
           <div fxLayout="column" fxLayoutGap="8px" style="margin: 12px">
-            <button mat-stroked-button (click)="notImplement()">View History</button>
-            <button mat-stroked-button (click)="leave()">Leave</button>
+            <button mat-stroked-button (click)="notImplemented()">View History</button>
+            <button mat-stroked-button (click)="leave.emit()">Leave</button>
           </div>
         </mat-drawer>
         <mat-drawer-content fxLayout fxLayoutAlign="center center"
@@ -89,10 +88,10 @@ import { fadeIn } from 'ng-animate';
                       Draw!
                     </ng-container>
                   </div>
-                  <button mat-raised-button color="accent" (click)="playAgain()">Play Again</button>
+                  <button mat-raised-button color="accent" (click)="playAgain.emit()">Play Again</button>
                 </div>
               </div>
-              <ng-container *ngComponentOutlet="BoardComponent; injector: roomInjector;"></ng-container>
+              <ng-container *ngComponentOutlet="BoardComponent; injector: injectorWithRoom;"></ng-container>
             </div>
             <ng-container *ngSwitchCase="true">
               <strong style="color: rgb(250, 79, 79);">Waiting for players</strong>
@@ -109,48 +108,30 @@ import { fadeIn } from 'ng-animate';
   `,
   styleUrls: ['./room2.component.scss'],
 })
-export class Room2Component implements OnInit, OnDestroy {
-  room: IRoom;
-  BoardComponent: any;
-  roomInjector: Injector;
+export class Room2Component {
+  @Input() BoardComponent: any;
+  injectorWithRoom: Injector;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private injector: Injector,
-    private colyseus: ColyseusService,
-  ) {
+  private _room: IRoom;
+  get room() {
+    return this._room;
   }
 
-  ngOnInit() {
-    this.route.data
-      .subscribe((data: { room: { room: IRoom, BoardComponent: any } }) => {
-        if (this.room) {
-          this.room.leave();
-        }
-        this.updateRoom(data.room);
-      });
-  }
+  @Input() set room(room: IRoom) {
+    if (room != null) {
+      this._room = room;
 
-  updateRoom({room, BoardComponent}: { room: IRoom, BoardComponent: any }) {
-    this.room = room; // reusing the room resolver for now todo move board somewhere else
-
-    this.roomInjector = Injector.create({providers: [{provide: ROOM_TOKEN, useValue: this.room}], parent: this.injector});
-    this.BoardComponent = BoardComponent;
-  }
-
-  ngOnDestroy() {
-    if (this.room) {
-      this.room.leave();
+      this.injectorWithRoom = Injector.create({providers: [{provide: ROOM_TOKEN, useValue: this._room}], parent: this.injector});
     }
   }
 
-  notImplement() {
-    console.warn('not implemented');
-  }
+  @Output() playAgain = new EventEmitter<never>();
+  @Output() leave = new EventEmitter<never>();
 
-  leave() {
-    this.router.navigate(['../../lobby'], {relativeTo: this.route});
+  constructor(private injector: Injector) {}
+
+  notImplemented() {
+    console.warn('not implemented');
   }
 
   isDone() {
@@ -160,15 +141,5 @@ export class Room2Component implements OnInit, OnDestroy {
   getWinnerNickName() {
     const winner = this.room.state.players.find(player => player.id === this.room.state.winner);
     return winner.profile.nickname;
-  }
-
-  playAgain() {
-    this.room.onLeave.addOnce(async () => {
-      const room = await this.colyseus.joinWhenReady(this.room.name);
-      delete this.room;
-
-      this.router.navigate(['..', room.id], {relativeTo: this.route});
-    });
-    this.room.leave();
   }
 }

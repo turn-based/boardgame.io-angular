@@ -11,6 +11,7 @@ import { Room2Component } from './room2.component';
 import { RoomResolver } from './room.resolver';
 import { App2Component } from './app2.component';
 import { Lobby2Component } from './lobby2.component';
+import { MultiplayerPageComponent } from './multiplayer-page.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { Lobby2Component } from './lobby2.component';
     Room2Component,
     App2Component,
     Lobby2Component,
+    MultiplayerPageComponent,
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,7 @@ import { Lobby2Component } from './lobby2.component';
           },
           {
             path: 'rooms/:roomId',
-            component: Room2Component,
+            component: MultiplayerPageComponent,
             resolve: {
               room: RoomResolver
             }

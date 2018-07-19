@@ -6,7 +6,7 @@ import { ColyseusService, CONNECTION_STATUS } from './colyseus.service';
     <div fxLayout="column" style="height: 100%;">
       <mat-toolbar fxFlex="none" class="mat-elevation-z6" style="z-index: 1" fxLayout fxLayoutAlign="space-between center">
         <a mat-button routerLink="/app2/lobby">ROOMZ!</a>
-        <mat-icon [title]="colyseus.readyState" class="not_connected" *ngIf="colyseus.readyState !== CONNECTION_STATUS.CONNECTED">
+        <mat-icon [title]="colyseus.readyState" class="not_connected" *ngIf="!colyseus.isReady">
           cloud_off
         </mat-icon>
       </mat-toolbar>

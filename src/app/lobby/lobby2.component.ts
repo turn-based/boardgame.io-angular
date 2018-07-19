@@ -16,10 +16,8 @@ import { ColyseusService } from './colyseus.service';
           <div fxLayout fxLayoutAlign="space-between center">
             <span style="">Tic Tac Toe</span>
             <span fxFlex="26px"></span>
-            <!--colyseus.isReady-->
-            <button mat-stroked-button (click)="play()" [disabled]="false" [ngSwitch]="true">
-              <ng-container *ngSwitchCase="true">play</ng-container>
-              <ng-container *ngSwitchCase="false">Sorry, can't play while server is down</ng-container>
+            <button mat-stroked-button (click)="play()" [disabled]="!colyseus.isReady">
+              {{colyseus.isReady ? 'Play' : "Sorry, can't play while server is down"}}
             </button>
           </div>
         </div>
@@ -28,7 +26,7 @@ import { ColyseusService } from './colyseus.service';
   `
 })
 export class Lobby2Component {
-  constructor(private router: Router, private route: ActivatedRoute, private colyseus: ColyseusService) {
+  constructor(private router: Router, private route: ActivatedRoute, public colyseus: ColyseusService) {
   }
 
   async play() {
