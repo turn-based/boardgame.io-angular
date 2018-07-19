@@ -8,22 +8,30 @@ export interface IProfile {
 
 export interface IPlayer {
   id: string;
+  idx: string;
   color: string;
   profile: IProfile;
 }
 
-export interface IMinimalState {
+export interface IRoomState<T> {
   currentTurn: string;
   players: IPlayer[];
   winner: string;
   draw: boolean;
+
+  bgio: {
+    G: T,
+    ctx: {
+      gameover: any
+    }
+  };
 }
 
-export interface IRoom<T extends IMinimalState = IMinimalState> {
+export interface IRoom<T = any> {
   id: string;
   sessionId: string;
   name: string;
-  state: T;
+  state: IRoomState<T>;
   onLeave: Signal;
 
   send(message: any): void;

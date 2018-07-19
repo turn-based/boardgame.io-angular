@@ -5,12 +5,19 @@ import { ColyseusService } from './colyseus.service';
 
 @Component({
   template: `
-    <tb-room [room]="room" [BoardComponent]="BoardComponent" (playAgain)="playAgain()" (leave)="leave()"></tb-room>
+    <tb-room
+      [room]="room"
+      [BoardComponent]="BoardComponent"
+      [Game]="Game"
+      (playAgain)="playAgain()"
+      (leave)="leave()">
+    </tb-room>
   `,
 })
 export class MultiplayerPageComponent implements OnInit, OnDestroy {
   room: IRoom;
   BoardComponent: any;
+  Game: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,13 +28,13 @@ export class MultiplayerPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.data
-      .subscribe((data: { room: { room: IRoom, BoardComponent: any } }) => {
+      .subscribe((data: { room: { room: IRoom, BoardComponent: any, Game: any } }) => {
         if (this.room) {
           this.room.leave();
         }
-        // this.updateRoom(data.room);
         this.room = data.room.room;
         this.BoardComponent = data.room.BoardComponent;
+        this.Game = data.room.Game;
       });
   }
 

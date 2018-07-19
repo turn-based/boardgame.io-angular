@@ -8,7 +8,7 @@
 
 import { Game } from 'boardgame.io/dist/core';
 
-function IsVictory(cells) {
+export function IsVictory(cells) {
   const positions = [
     [0, 1, 2],
     [3, 4, 5],
@@ -48,7 +48,7 @@ export const TicTacToe = Game({
       const cells = [...G.cells];
 
       if (cells[id] === null) {
-        cells[id] = ctx.currentTurn;
+        cells[id] = ctx.currentPlayer;
       }
 
       return { ...G, cells };
@@ -60,7 +60,7 @@ export const TicTacToe = Game({
 
     endGameIf: (G, ctx) => {
       if (IsVictory(G.cells)) {
-        return { winner: ctx.currentTurn };
+        return { winner: ctx.currentPlayer };
       }
       // noinspection TsLint
       if (G.cells.filter(c => c === null).length == 0) {

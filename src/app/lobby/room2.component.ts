@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, Output } from '@angular/core';
 import { fadeInUp } from './fade-in-up.animation';
 import { IRoom, ROOM_TOKEN } from './types';
 import { transition, trigger, useAnimation } from '@angular/animations';
@@ -40,7 +40,7 @@ import { fadeIn } from 'ng-animate';
               <h3 matSubheader>Players</h3>
               <mat-list-item
                 *ngFor="let player of room.state.players"
-                [ngClass]="{'shadow-pop-tr': player.id === room.state.currentTurn}"
+                [ngClass]="{'shadow-pop-tr': canPlayerMakeMove(player.idx)}"
               >
                 <img matListAvatar [src]="player.profile.picture" style="border: 2px solid;" [ngStyle]="{'border-color': player.color}">
                 <h3 matLine>
@@ -48,9 +48,10 @@ import { fadeIn } from 'ng-animate';
                 </h3>
                 <p matLine [ngSwitch]="isDone()" class="player-status">
                   <span *ngSwitchCase="true" class="current-player">
-                    {{player.id === room.state.winner ? (player.id === room.sessionId ? 'You Won!' : 'Winner') : '&nbsp;'}}
+                    {{player.idx === room.state.bgio.ctx.gameover.winner ?
+                              (player.id === room.sessionId ? 'You Won!' : 'Winner') : '&nbsp;'}}
                   </span>
-                  <ng-container *ngSwitchCase="false" [ngSwitch]="player.id === room.state.currentTurn">
+                  <ng-container *ngSwitchCase="false" [ngSwitch]="canPlayerMakeMove(player.idx)">
                     <span *ngSwitchCase="false" style="color: #c3c3c3">Waiting...</span>
                     <ng-container *ngSwitchCase="true" [ngSwitch]="player.id === room.sessionId">
                       <span *ngSwitchCase="false" class="current-player">Current Player</span>
@@ -81,10 +82,10 @@ import { fadeIn } from 'ng-animate';
                    fxLayout fxLayoutAlign="center center">
                 <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
                   <div>
-                    <ng-container *ngIf="room.state.winner">
+                    <ng-container *ngIf="room.state.bgio.ctx.gameover.winner">
                       <strong>Winner: </strong>{{getWinnerNickName()}}!
                     </ng-container>
-                    <ng-container *ngIf="room.state.draw">
+                    <ng-container *ngIf="room.state.bgio.ctx.gameover.draw">
                       Draw!
                     </ng-container>
                   </div>
@@ -110,6 +111,8 @@ import { fadeIn } from 'ng-animate';
 })
 export class Room2Component {
   @Input() BoardComponent: any;
+  @Input() Game: any;
+
   injectorWithRoom: Injector;
 
   private _room: IRoom;
@@ -128,18 +131,23 @@ export class Room2Component {
   @Output() playAgain = new EventEmitter<never>();
   @Output() leave = new EventEmitter<never>();
 
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+  }
 
   notImplemented() {
     console.warn('not implemented');
   }
 
   isDone() {
-    return this.room.state.winner || this.room.state.draw ? true : false;
+    return this.room.state.bgio.ctx.gameover !== undefined;
   }
 
   getWinnerNickName() {
-    const winner = this.room.state.players.find(player => player.id === this.room.state.winner);
+    const winner = this.room.state.players.find(player => player.idx === this.room.state.bgio.ctx.gameover.winner);
     return winner.profile.nickname;
+  }
+
+  canPlayerMakeMove(playerID: string) {
+    return this.Game.flow.canPlayerMakeMove(this.room.state.bgio.G, this.room.state.bgio.ctx, playerID);
   }
 }

@@ -1,4 +1,7 @@
 import { Room } from 'colyseus';
+import { CreateGameReducer } from 'boardgame.io/core';
+import { createStore } from 'redux';
+import { IsVictory, TicTacToe } from '../shared/games/tic-tac-toe';
 
 const MOCK_PLAYERS = [
   {
@@ -18,41 +21,56 @@ const MOCK_PLAYERS = [
 ];
 
 export class BaseRoom extends Room {
+  store: any;
+
   onInit() {
     this.maxClients = 2;
 
+    const reducer = CreateGameReducer({
+      game: TicTacToe,
+      numPlayers: 2,
+    });
+    this.store = createStore(reducer);
+
     this.setState({
+      bgio: this.store.getState(),
       currentTurn: null,
       players: [],
-      board: [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+      cells: Array(9).fill(null),
       winner: null,
       draw: null
     });
   }
 
   onJoin(client) {
-    const idx = this.state.players.length;
+    const idx = this.state.players.length.toString();
     client.playerIndex = idx;
-    this.state.players.push({...MOCK_PLAYERS[idx], id: client.sessionId});
+    this.state.players.push({...MOCK_PLAYERS[idx], idx, id: client.sessionId});
 
     if (this.clients.length === 2) {
-      this.state.currentTurn = client.sessionId;
+      this.state.currentTurn = this.state.players[0].id;
 
       this.lock();
     }
   }
 
   onMessage(client, data) {
+    if (TicTacToe.flow.canPlayerMakeMove(this.state.bgio.G, this.state.bgio.ctx, client.playerIndex)) {
+      this.store.dispatch(data.action);
+      this.state.bgio = this.store.getState();
+    }
+
     if (this.state.winner || this.state.draw) {
       return false;
     }
 
+    const cellIdx = data.action.payload.args;
     if (client.sessionId === this.state.currentTurn) {
-      if (this.state.board[data.x][data.y] === 0) {
-        const move = (client.playerIndex === 0) ? 'x' : 'o';
-        this.state.board[data.x][data.y] = move;
+      if (this.state.cells[cellIdx] == null) {
+        const move = (client.playerIndex === '0') ? 'x' : 'o';
+        this.state.cells[cellIdx] = move;
 
-        if (this.checkWin(data.x, data.y, move)) {
+        if (IsVictory(this.state.cells)) {
           this.state.winner = client.sessionId;
 
         } else if (this.checkBoardComplete()) {
@@ -60,7 +78,7 @@ export class BaseRoom extends Room {
 
         } else {
           // switch turn
-          const otherPlayerIndex = (client.playerIndex === 0) ? 1 : 0;
+          const otherPlayerIndex = (client.playerIndex === '0') ? 1 : 0;
 
           this.state.currentTurn = this.state.players[otherPlayerIndex].id;
         }
@@ -69,57 +87,7 @@ export class BaseRoom extends Room {
   }
 
   checkBoardComplete() {
-    return this._flatten(this.state.board).filter(item => item === 0).length === 0;
-  }
-
-  checkWin(x, y, move) {
-    let won = false;
-    const board = this.state.board;
-    const boardSize = this.state.board.length;
-
-    // horizontal
-    for (let i = 0; i < boardSize; i++) {
-      if (board[x][i] !== move) {
-        break;
-      }
-      if (i === boardSize - 1) {
-        won = true;
-      }
-    }
-
-    // vertical
-    for (let i = 0; i < boardSize; i++) {
-      if (board[i][y] !== move) {
-        break;
-      }
-      if (i === boardSize - 1) {
-        won = true;
-      }
-    }
-
-    // cross forward
-    if (x === y) {
-      for (let i = 0; i < boardSize; i++) {
-        if (board[i][i] !== move) {
-          break;
-        }
-        if (i === boardSize - 1) {
-          won = true;
-        }
-      }
-    }
-
-    // cross backward
-    for (let i = 0; i < boardSize; i++) {
-      if (board[i][(boardSize - 1) - i] !== move) {
-        break;
-      }
-      if (i === boardSize - 1) {
-        won = true;
-      }
-    }
-
-    return won;
+    return this.state.cells.every(item => item !== null);
   }
 
   onLeave(client) {
@@ -130,18 +98,4 @@ export class BaseRoom extends Room {
       this.state.winner = this.state.players[0].id;
     }
   }
-
-  _flatten(arr, previous?) {
-    const flattened = previous || [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] instanceof Array) {
-        this._flatten(arr[i], flattened);
-      } else {
-        flattened.push(arr[i]);
-      }
-    }
-
-    return flattened;
-  }
-
 }

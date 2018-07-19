@@ -12,6 +12,7 @@ import { RoomResolver } from './room.resolver';
 import { App2Component } from './app2.component';
 import { Lobby2Component } from './lobby2.component';
 import { MultiplayerPageComponent } from './multiplayer-page.component';
+import { StandalonePageComponent } from './standalone-page.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MultiplayerPageComponent } from './multiplayer-page.component';
     App2Component,
     Lobby2Component,
     MultiplayerPageComponent,
+    StandalonePageComponent,
   ],
   imports: [
     CommonModule,
@@ -53,6 +55,10 @@ import { MultiplayerPageComponent } from './multiplayer-page.component';
             resolve: {
               room: RoomResolver
             }
+          },
+          {
+            path: 'standalone',
+            component: StandalonePageComponent,
           }
         ]
       }
