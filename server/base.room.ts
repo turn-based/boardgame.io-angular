@@ -52,14 +52,14 @@ export class BaseRoom extends Room {
   }
 
   onMessage(client, data) {
-    if (TicTacToe.flow.canPlayerMakeMove(this.state.bgio.G, this.state.bgio.ctx, client.playerIndex)) {
+    if (this.state.isReady && TicTacToe.flow.canPlayerMakeMove(this.state.bgio.G, this.state.bgio.ctx, client.playerIndex)) {
       this.store.dispatch(data.action);
       this.state.bgio = this.store.getState();
     }
   }
 
   onLeave(client) {
-    const idx = this.state.players.findIndex(player => player.id = client.sessionId);
+    const idx = this.state.players.findIndex(player => player.id === client.sessionId);
     this.state.players = [...this.state.players.slice(0, idx), ...this.state.players.slice(idx + 1)];
 
     if (this.state.players.length > 0 && this.state.bgio.ctx.gameover === undefined) {

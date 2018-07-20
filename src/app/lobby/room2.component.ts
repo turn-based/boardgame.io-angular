@@ -49,7 +49,7 @@ import { fadeIn } from 'ng-animate';
                 <p matLine [ngSwitch]="isDone()" class="player-status">
                   <span *ngSwitchCase="true" class="current-player">
                     {{player.idx === room.state.bgio.ctx.gameover.winner ?
-                              (player.id === room.sessionId ? 'You Won!' : 'Winner') : '&nbsp;'}}
+                    (player.id === room.sessionId ? 'You Won!' : 'Winner') : '&nbsp;'}}
                   </span>
                   <ng-container *ngSwitchCase="false" [ngSwitch]="canPlayerMakeMove(player.idx)">
                     <span *ngSwitchCase="false" style="color: #c3c3c3">Waiting...</span>
@@ -124,10 +124,13 @@ export class Room2Component {
     if (room != null) {
       this._room = room;
 
-      this.injectorWithRoom = Injector.create({providers: [
-        {provide: ROOM_TOKEN, useValue: this._room},
-        {provide: GAME_TOKEN, useValue: this.Game}
-      ], parent: this.injector});
+      this.injectorWithRoom = Injector.create({
+        providers: [
+          {provide: ROOM_TOKEN, useValue: this._room},
+          {provide: GAME_TOKEN, useValue: this.Game}
+        ],
+        parent: this.injector,
+      });
     }
   }
 
