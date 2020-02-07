@@ -8,8 +8,16 @@
 
 ### Installation
 
+#### current version (possibly stale)
+
 ```
 $ npm install --save boardgame.io-angular google/boardgame.io ng-dynamic-component react react-dom uuid
+```
+
+#### next version that uses angular@9 and avoids react
+
+```
+$ npm install --save boardgame.io-angular@next boardgame.io 
 ```
 
 (react dependency is needed to displaying the Debug UI from the source repository)
