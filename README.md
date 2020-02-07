@@ -3,7 +3,7 @@
  <a href="https://www.npmjs.com/package/boardgame.io-angular"><img src="https://badge.fury.io/js/boardgame.io-angular.svg" alt="npm version"></a>
 
  Angular client for [Boardgame.io](http://boardgame.io).
-  
+
  Checkout the [example application](https://turn-based-209306.firebaseapp.com)!
 
 ### Installation
@@ -90,3 +90,11 @@ $ cd server
 $ npm i
 $ npm run start:dev 
 ```
+
+### This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.
+
+With commands
+1) ``` npx @angular/cli@9 new boardgame.io-angular --create-application false --prefix bio --style scss --strict --skip-tests -s -t```
+1) ```cd boardgame.io-angular```
+1) ```npx @angular/cli@9 g application demo --prefix bio --style scss --skip-tests -s -t```
+1) ```npx @angular/cli@9 g library bio-angular --prefix bio```

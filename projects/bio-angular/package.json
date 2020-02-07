@@ -1,6 +1,6 @@
 {
   "name": "boardgame.io-angular",
-  "version": "0.24.0",
+  "version": "0.25.0-next",
   "repository": {
     "type": "git",
     "url": "https://github.com/turn-based/boardgame.io-angular.git"
@@ -15,17 +15,9 @@
   "keywords": ["angular", "boardgame.io", "turn-based"],
   "description": "Angular client for boardgame.io",
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "boardgame.io": "github:google/boardgame.io",
-    "ng-dynamic-component": "^3.0.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "uuid": "^3.3.0"
-  },
-  "devDependencies": {
-    "@types/react": "^16.4.6",
-    "@types/react-dom": "^16.0.6",
-    "@types/uuid": "^3.4.3"
+    "@angular/common": "^9.0.0",
+    "@angular/core": "^9.0.0",
+    "boardgame.io": "^0.36.0",
+    "tslib": "^1.10.0"
   }
 }

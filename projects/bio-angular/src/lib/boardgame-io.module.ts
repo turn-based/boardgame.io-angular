@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
-import { ClientComponent } from './bio-client.component';
+import { BioClientComponent } from './bio-client.component';
 import { CommonModule } from '@angular/common';
-import { DynamicModule } from 'ng-dynamic-component';
-import { DebugComponent } from './bio-debug.component';
+
+
 
 @NgModule({
+  declarations: [BioClientComponent],
   imports: [
     CommonModule,
-
-    DynamicModule.withComponents(null),
   ],
-  declarations: [ClientComponent, DebugComponent],
-  exports: [ClientComponent]
+  exports: [BioClientComponent]
 })
 export class BoardgameIoModule { }

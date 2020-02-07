@@ -1,102 +1,116 @@
-import { AfterContentInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Client as RawClient, Debug } from 'boardgame.io/dist/client';
+// tslint:disable-next-line:no-reference
+/// <reference path="./boardgame.io.d.ts" />
+
+import { Component, Injector, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Client } from 'boardgame.io/client';
+import { BoardConfig, GameConfig, GameScope, OBSERVABLE_BOARD_CONFIG } from './config';
 
 @Component({
   selector: 'bio-client',
   template: `
-    <ng-container *ngIf="client">
-      <ng-container *ngComponentOutlet="board;
-                                            ndcDynamicInputs: getBoardInputs()">
+      <ng-container *ngIf="config; else waitConfig">
+          <ng-container *ngIf="client?.getState(); let state; else waitState">
+              <h4>bio-client works!</h4>
+              <ng-container *ngComponentOutlet="config.board; injector: boardInjector;"></ng-container>
+          </ng-container>
       </ng-container>
-    </ng-container>
 
-    <bio-debug *ngIf="debug && client"
-               [gamestate]="client.getState()"
-               [gameID]="gameID"
-               [playerID]="playerID"
-               [isMultiplayer]="multiplayer !== undefined"
-               [moves]="client.moves"
-               [events]="client.events"
-               [store]="client.store"
-               [step]="client.step"
-               [reset]="client.reset"
-               [reducer]="client.reducer"
-    ></bio-debug>
-  `
+      <ng-template #waitConfig>waiting for config...</ng-template>
+      <ng-template #waitState>waiting for state...</ng-template>
+  `,
+  styles: [],
 })
-export class ClientComponent implements OnInit, OnChanges, AfterContentInit {
+export class BioClientComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() gameID: any = 'default';
+  @Input() playerID: any = null;
+  @Input() credentials: any = null;
+  @Input() debug = false;
 
-  // class inputs (possible move to higher level initialization (e.g., class factory)
-  @Input() game: any;
-  @Input() numPlayers: number;
-  @Input() board: any;
-  @Input() multiplayer: any;
-  @Input() ai: any;
-  @Input() enhancer: any;
-
-  // instance inputs
-  @Input() gameID = 'default';
-  @Input() playerID: string = null;
-  @Input() credentials: string = null; // TODO this
-
-  // overridable inputs (both class and instance)
-  @Input() debug = true;
-
+  config: GameConfig | false = false;
+  private subscriptions = new Subscription();
   client: any;
+  private boardConfigSubject = new BehaviorSubject<BoardConfig | false>(false);
+  boardInjector: Injector;
+  private unsubscribeBgioClient: any;
+
+  constructor(private bio: GameScope, injector: Injector) {
+    this.boardInjector =
+      Injector.create({
+        providers: [{provide: OBSERVABLE_BOARD_CONFIG, useValue: this.boardConfigSubject.asObservable()}],
+        parent: injector,
+        name: 'boardInjector'
+      });
+  }
 
   ngOnInit() {
-    this.client = RawClient({
-      game: this.game,
-      ai: this.ai,
-      numPlayers: this.numPlayers,
-      multiplayer: this.multiplayer,
+    this.subscriptions.add(this.bio.configObservable.subscribe((config) => {
+      console.log('gameConfig', config);
+      if (!config && this.config) {
+        // todo teardown logic
+        delete this.client;
+      }
+      this.config = config;
+      if (config) {
+        // noinspection PointlessBooleanExpressionJS
+        this.client = Client({
+          ...config,
+          gameID: this.gameID,
+          playerID: this.playerID,
+          credentials: this.credentials,
+          debug: config.debug === false ? false : this.debug,
+        });
+        this.unsubscribeBgioClient = this.client.subscribe(() => this.updateBoardConfig());
+        this.client.start();
+      }
+      this.updateBoardConfig();
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+    if (this.client) {
+      this.client.stop();
+    }
+    this.boardConfigSubject.complete();
+    this.unsubscribeBgioClient();
+  }
+
+  updateBoardConfig() {
+    const boardConfig = this.config && this.client ? {
+      ...this.client.getState(),
+      isMultiplayer: !!(this.config && this.config.multiplayer),
+      moves: this.client.moves,
+      events: this.client.events,
       gameID: this.gameID,
       playerID: this.playerID,
-      credentials: this.credentials,
-      enhancer: this.enhancer,
-    });
-
-    // todo is this needed? (forceUpdate on react)
-    // this.client.subscribe(() => {
-    //   console.log('client.subscribe triggered (forceUpdate needed?)');
-    // });
+      step: this.client.step,
+      reset: this.client.reset,
+      undo: this.client.undo,
+      redo: this.client.redo,
+      gameMetadata: this.client.gameMetadata,
+    } : false;
+    this.boardConfigSubject.next(boardConfig);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.updateBoardConfig();
+
     if (this.client) {
-      // noinspection TsLint
+      // tslint:disable-next-line:triple-equals
       if (changes.gameID && changes.gameID.currentValue != changes.gameID.previousValue) {
         this.client.updateGameID(changes.gameID.currentValue);
       }
-      // noinspection TsLint
+
+      // tslint:disable-next-line:triple-equals
       if (changes.playerID && changes.playerID.currentValue != changes.playerID.previousValue) {
         this.client.updatePlayerID(changes.playerID.currentValue);
       }
-      // noinspection TsLint
+
+      // tslint:disable-next-line:triple-equals
       if (changes.credentials && changes.credentials.currentValue != changes.credentials.previousValue) {
         this.client.updateCredentials(changes.credentials.currentValue);
       }
     }
   }
-
-  ngAfterContentInit() {
-    this.client.connect();
-  }
-
-  getBoardInputs() {
-    const state = this.client.getState();
-    return {
-      ...state,
-      isMultiplayer: this.multiplayer !== undefined,
-      moves: this.client.moves,
-      events: this.client.events,
-      gameID: this.gameID,
-      playerID: this.playerID,
-      reset: this.client.reset,
-      undo: this.client.undo,
-      redo: this.client.redo,
-    };
-
-  }
-
 }
