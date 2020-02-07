@@ -1,1 +1,0 @@
-declare module 'boardgame.io*';
