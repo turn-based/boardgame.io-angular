@@ -1,21 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay, withLatestFrom } from 'rxjs/operators';
+import { MatSidenav } from '@angular/material/sidenav';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'bio-navigation',
   template: `
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer class="sidenav" fixedInViewport
-          [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-          [mode]="(isHandset$ | async) ? 'over' : 'side'"
-          [opened]="(isHandset$ | async) === false">
-        <mat-toolbar>Menu</mat-toolbar>
+                   [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+                   [mode]="(isHandset$ | async) ? 'over' : 'side'"
+                   [opened]="(isHandset$ | async) === false">
+        <mat-toolbar>Examples</mat-toolbar>
         <mat-nav-list>
-          <a mat-list-item href="#">Link 1</a>
-          <a mat-list-item href="#">Link 2</a>
-          <a mat-list-item href="#">Link 3</a>
+          <ng-container *ngFor="let exampleSection of exampleSections">
+            <h3 matSubheader>{{exampleSection.id}}</h3>
+            <a *ngFor="let exampleName of exampleSection.exampleNames" mat-list-item
+               [routerLink]="['examples', exampleSection.id, exampleName]" routerLinkActive="active">{{exampleName}}</a>
+          </ng-container>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
@@ -28,10 +32,15 @@ import { map, shareReplay } from 'rxjs/operators';
             *ngIf="isHandset$ | async">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
-          <span>demo</span>
+          <span>
+            <ng-container *ngIf="routerOutlet.activatedRouteData['example'] as example">
+              {{example.sectionId}}: {{example.name}}
+            </ng-container>
+          </span>
         </mat-toolbar>
-        <!-- Add Content Here -->
-        <bio-client gameID="single"></bio-client>
+
+        <router-outlet #routerOutlet="outlet"></router-outlet>
+        <!--        <bio-client gameID="single"></bio-client>-->
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
@@ -41,7 +50,7 @@ import { map, shareReplay } from 'rxjs/operators';
     }
 
     .sidenav {
-      width: 200px;
+      width: 300px;
     }
 
     .sidenav .mat-toolbar {
@@ -54,9 +63,22 @@ import { map, shareReplay } from 'rxjs/operators';
       z-index: 1;
     }
 
+    [mat-list-item].active {
+      background: var(--global-selected);
+      /*background: #61dafb;*/
+    }
   `]
 })
 export class NavigationComponent {
+  @ViewChild('drawer', {static: true}) drawer: MatSidenav;
+
+  exampleSections = [{
+    id: 'Tic-Tac-Toe',
+    exampleNames: ['Singleplayer', 'Multiplayer', 'Authenticated', 'Spectator']
+  }, {
+    id: 'Chess',
+    exampleNames: ['Singleplayer', 'Multiplayer']
+  }];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -64,6 +86,11 @@ export class NavigationComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
-
+  constructor(private breakpointObserver: BreakpointObserver,
+              router: Router) {
+    router.events.pipe(
+      withLatestFrom(this.isHandset$),
+      filter(([event, isHandset]) => isHandset && event instanceof NavigationEnd)
+    ).subscribe(_ => this.drawer.close());
+  }
 }

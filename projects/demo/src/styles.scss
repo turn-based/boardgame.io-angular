@@ -1,4 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+// Import library functions for theme creation.
+@import '~@angular/material/theming';
+
+// Include non-theme styles for core.
+@include mat-core();
+
+// Define a theme (pink-bluegrey).
+$primary: mat-palette($mat-pink, 700, 500, 900);
+$accent:  mat-palette($mat-blue-grey, A200, A100, A400);
+
+$theme: mat-dark-theme($primary, $accent);
+
+// Include all theme styles for the components.
+@include angular-material-theme($theme);
+
+$cc: mat-color(map-get($theme, 'background'), 'hover');
+// add my variables
+:root {
+  --global-selected: #{mat-color(map-get($theme, background), focused-button)}; //green;//mat-color(map-get($theme, 'foreground'), 'base');
+}
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}

@@ -12,11 +12,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { ExampleComponent } from './example.component';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationComponent
+    NavigationComponent,
+    ExampleComponent
   ],
   imports: [
     BrowserModule,
@@ -30,8 +33,27 @@ import { MatListModule } from '@angular/material/list';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    RouterModule.forRoot([
+        {
+          path: 'examples/:sectionId/:exampleName', component: ExampleComponent,
+          resolve: {
+            example: 'exampleResolver',
+          },
+        },
+        {path: '', redirectTo: '/examples/Tic-Tac-Toe/Singleplayer', pathMatch: 'full'},
+      ],
+      // { enableTracing: ! environment.production },
+    ),
   ],
-  providers: [],
+  providers: [{
+    provide: 'exampleResolver',
+    useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => ({
+      sectionId: route.paramMap.get('sectionId'),
+      name: route.paramMap.get('exampleName'),
+      // todo get the actual example
+    })
+  }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
