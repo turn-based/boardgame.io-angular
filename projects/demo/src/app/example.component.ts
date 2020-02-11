@@ -1,17 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { GameScope } from 'boardgame.io-angular';
+import { Example } from './examples';
 
 @Component({
-  selector: 'bio-example',
   template: `
-    <p>
-      example works!
-    </p>
+    <bio-client *ngIf="showClient; else noConfig" gameID="single"></bio-client>
+    <ng-template #noConfig>Could not find game config</ng-template>
   `,
-  styles: []
+  providers: [GameScope],
 })
-export class ExampleComponent implements OnInit {
+export class ExampleComponent {
+  showClient = false;
 
-  ngOnInit(): void {
+  constructor(route: ActivatedRoute, gameScope: GameScope) {
+    route.data.subscribe(({example}: {example: Example}) => {
+      if (example.hasOwnProperty('gameConfig')) {
+        gameScope.setConfig(example.gameConfig);
+        this.showClient = true;
+      } else {
+        this.showClient = false;
+      }
+    });
   }
-
 }

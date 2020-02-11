@@ -1,11 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
 import { BoardgameIoModule } from 'boardgame.io-angular';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationComponent } from './navigation/navigation.component';
+import { NavigationComponent } from './navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,10 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ExampleComponent } from './example.component';
 import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot } from '@angular/router';
+import { getExample } from './examples';
 
 @NgModule({
   declarations: [
-    AppComponent,
     NavigationComponent,
     ExampleComponent
   ],
@@ -47,13 +46,10 @@ import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot } from '@angu
   ],
   providers: [{
     provide: 'exampleResolver',
-    useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => ({
-      sectionId: route.paramMap.get('sectionId'),
-      name: route.paramMap.get('exampleName'),
-      // todo get the actual example
-    })
+    useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) =>
+      getExample(route.paramMap.get('sectionId'), route.paramMap.get('exampleName'))
   }],
-  bootstrap: [AppComponent]
+  bootstrap: [NavigationComponent]
 })
 export class AppModule {
 }

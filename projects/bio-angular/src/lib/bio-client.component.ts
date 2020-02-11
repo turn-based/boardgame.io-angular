@@ -11,7 +11,6 @@ import { BoardConfig, GameConfig, GameScope, OBSERVABLE_BOARD_CONFIG } from './c
   template: `
       <ng-container *ngIf="config; else waitConfig">
           <ng-container *ngIf="client?.getState(); let state; else waitState">
-              <h4>bio-client works!</h4>
               <ng-container *ngComponentOutlet="config.board; injector: boardInjector;"></ng-container>
           </ng-container>
       </ng-container>
@@ -45,7 +44,6 @@ export class BioClientComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.subscriptions.add(this.bio.configObservable.subscribe((config) => {
-      console.log('gameConfig', config);
       if (!config && this.config) {
         // todo teardown logic
         delete this.client;

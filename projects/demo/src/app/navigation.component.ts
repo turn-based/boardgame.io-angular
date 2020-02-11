@@ -6,7 +6,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
-  selector: 'bio-navigation',
+  selector: 'bio-root',
   template: `
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer class="sidenav" fixedInViewport
@@ -38,9 +38,9 @@ import { NavigationEnd, Router } from '@angular/router';
             </ng-container>
           </span>
         </mat-toolbar>
-
-        <router-outlet #routerOutlet="outlet"></router-outlet>
-        <!--        <bio-client gameID="single"></bio-client>-->
+        <div style="padding: 24px">
+          <router-outlet #routerOutlet="outlet"></router-outlet>
+        </div>
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
@@ -50,7 +50,7 @@ import { NavigationEnd, Router } from '@angular/router';
     }
 
     .sidenav {
-      width: 300px;
+      width: 304px;
     }
 
     .sidenav .mat-toolbar {

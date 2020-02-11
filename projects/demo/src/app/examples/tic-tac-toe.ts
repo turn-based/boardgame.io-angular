@@ -114,7 +114,6 @@ class BoardComponent {
 
   constructor(@Inject(OBSERVABLE_BOARD_CONFIG) observableBoardConfig: Observable<BoardConfig>) {
     observableBoardConfig.subscribe((config) => {
-      console.log('boardConfig', config);
       if (config) {
         Object.assign(this, config);
       }
