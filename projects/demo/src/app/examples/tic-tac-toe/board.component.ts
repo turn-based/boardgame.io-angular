@@ -1,4 +1,4 @@
-import { Component, Inject, NgModule } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { BoardConfig, OBSERVABLE_BOARD_CONFIG } from 'boardgame.io-angular';
@@ -32,7 +32,7 @@ import { BoardConfig, OBSERVABLE_BOARD_CONFIG } from 'boardgame.io-angular';
       </div>
   `,
 })
-class BoardComponent {
+class BoardComponent implements OnInit {
   isMultiplayer: boolean;
   isConnected: boolean;
   isPreview: boolean;
@@ -41,11 +41,16 @@ class BoardComponent {
   ctx: any;
   G: any;
   moves: any;
+  constructor(@Inject(OBSERVABLE_BOARD_CONFIG) private observableBoardConfig: Observable<BoardConfig>,
+              private changeDetectorRef: ChangeDetectorRef) {
+  }
 
-  constructor(@Inject(OBSERVABLE_BOARD_CONFIG) observableBoardConfig: Observable<BoardConfig>) {
-    observableBoardConfig.subscribe((config) => {
+  ngOnInit(): void {
+    this.observableBoardConfig.subscribe((config) => {
       if (config) {
         Object.assign(this, config);
+        // todo (will this always be needed?) see https://github.com/angular/angular/issues/25962
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
