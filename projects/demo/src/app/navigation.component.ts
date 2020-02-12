@@ -45,6 +45,15 @@ import { NavigationEnd, Router } from '@angular/router';
     </mat-sidenav-container>
   `,
   styles: [`
+    :host {
+      position: fixed;
+      top: 0px;
+      right: 0px;
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+    }
+
     .sidenav-container {
       height: 100%;
     }

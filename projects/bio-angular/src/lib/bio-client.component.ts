@@ -50,13 +50,12 @@ export class BioClientComponent implements OnInit, OnDestroy, OnChanges {
       }
       this.config = config;
       if (config) {
-        // noinspection PointlessBooleanExpressionJS
         this.client = Client({
           ...config,
           gameID: this.gameID,
           playerID: this.playerID,
           credentials: this.credentials,
-          debug: config.debug === false ? false : this.debug,
+          debug: config.debug === undefined ? this.debug : config.debug,
         });
         this.unsubscribeBgioClient = this.client.subscribe(() => this.updateBoardConfig());
         this.client.start();

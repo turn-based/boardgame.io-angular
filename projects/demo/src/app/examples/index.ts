@@ -1,5 +1,6 @@
 /* tslint:disable:object-literal-key-quotes */
-import { BoardComponent, game } from './tic-tac-toe';
+
+import {singlePlayerGameConfig as TicTacToeGameConfig} from './tic-tac-toe/singleplayer';
 
 export interface Example {
   sectionId: string;
@@ -11,21 +12,7 @@ const exampleSections: { [sectionId: string]: { [exampleName: string]: Example }
   'Tic-Tac-Toe': {
     'Singleplayer': {
       sectionId: 'Tic-Tac-Toe', name: 'Singleplayer',
-      gameConfig: {
-        game,
-        board: BoardComponent,
-        ai: {
-          enumerate: (G: any) => {
-            const r = [];
-            for (let i = 0; i < 9; i++) {
-              if (G.cells[i] === null) {
-                r.push({move: 'clickCell', args: [i]});
-              }
-            }
-            return r;
-          },
-        },
-      }
+      gameConfig: TicTacToeGameConfig,
     },
     'Multiplayer': {sectionId: 'Tic-Tac-Toe', name: 'Multiplayer'},
     'Authenticated': {sectionId: 'Tic-Tac-Toe', name: 'Authenticated'},

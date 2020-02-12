@@ -8,7 +8,7 @@ export interface GameConfig {
   multiplayer?: any;
   ai?: any;
   enhancer?: any;
-  debug?: boolean;
+  debug?: any;
 }
 
 export interface BoardConfig {
