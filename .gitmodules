@@ -1,0 +1,3 @@
+[submodule "boardgame.io"]
+	path = boardgame.io
+	url = https://github.com/nicolodavis/boardgame.io
