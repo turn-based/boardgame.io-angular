@@ -1,7 +1,7 @@
 // tslint:disable-next-line:no-reference
 /// <reference path="./boardgame.io.d.ts" />
 
-import { Component, Injector, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Injector, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Client } from 'boardgame.io/client';
 import { BoardConfig, GameConfig, GameScope, OBSERVABLE_BOARD_CONFIG } from './config';
@@ -9,16 +9,15 @@ import { BoardConfig, GameConfig, GameScope, OBSERVABLE_BOARD_CONFIG } from './c
 @Component({
   selector: 'bio-client',
   template: `
-      <ng-container *ngIf="config; else waitConfig">
-          <ng-container *ngIf="client?.getState(); let state; else waitState">
+    <ng-container *ngIf="config; else waitConfig">
+      <ng-container *ngIf="client?.getState(); let state; else waitState">
               <ng-container *ngComponentOutlet="config.board; injector: boardInjector;"></ng-container>
-          </ng-container>
       </ng-container>
+    </ng-container>
 
-      <ng-template #waitConfig>waiting for config...</ng-template>
-      <ng-template #waitState>waiting for state...</ng-template>
+    <ng-template #waitConfig>Waiting for game config...</ng-template>
+    <ng-template #waitState>Waiting for game state...</ng-template>
   `,
-  styles: [],
 })
 export class BioClientComponent implements OnInit, OnDestroy, OnChanges {
   @Input() gameID: any = 'default';
@@ -33,7 +32,7 @@ export class BioClientComponent implements OnInit, OnDestroy, OnChanges {
   boardInjector: Injector;
   private unsubscribeBgioClient: any;
 
-  constructor(private bio: GameScope, injector: Injector) {
+  constructor(private bio: GameScope, private zone: NgZone, injector: Injector) {
     this.boardInjector =
       Injector.create({
         providers: [{provide: OBSERVABLE_BOARD_CONFIG, useValue: this.boardConfigSubject.asObservable()}],
@@ -50,15 +49,19 @@ export class BioClientComponent implements OnInit, OnDestroy, OnChanges {
       }
       this.config = config;
       if (config) {
-        this.client = Client({
-          ...config,
-          gameID: this.gameID,
-          playerID: this.playerID,
-          credentials: this.credentials,
-          debug: config.debug === undefined ? this.debug : config.debug,
+        this.zone.runOutsideAngular(() => {
+          this.client = Client({
+            ...config,
+            gameID: this.gameID,
+            playerID: this.playerID,
+            credentials: this.credentials,
+            debug: config.debug === undefined ? this.debug : config.debug,
+          });
+          this.unsubscribeBgioClient = this.client.subscribe(
+            () => this.zone.run(this.updateBoardConfig, this)
+          );
+          this.client.start();
         });
-        this.unsubscribeBgioClient = this.client.subscribe(() => this.updateBoardConfig());
-        this.client.start();
       }
       this.updateBoardConfig();
     }));
@@ -75,17 +78,17 @@ export class BioClientComponent implements OnInit, OnDestroy, OnChanges {
 
   updateBoardConfig() {
     const boardConfig = this.config && this.client ? {
-      ...this.client.getState(),
-      isMultiplayer: !!(this.config && this.config.multiplayer),
-      moves: this.client.moves,
-      events: this.client.events,
-      gameID: this.gameID,
-      playerID: this.playerID,
-      step: this.client.step,
-      reset: this.client.reset,
-      undo: this.client.undo,
-      redo: this.client.redo,
-      gameMetadata: this.client.gameMetadata,
+        ...this.client.getState(),
+        isMultiplayer: !!(this.config && this.config.multiplayer),
+        moves: this.client.moves,
+        events: this.client.events,
+        gameID: this.gameID,
+        playerID: this.playerID,
+        step: this.client.step,
+        reset: this.client.reset,
+        undo: this.client.undo,
+        redo: this.client.redo,
+        gameMetadata: this.client.gameMetadata,
     } : false;
     this.boardConfigSubject.next(boardConfig);
   }
