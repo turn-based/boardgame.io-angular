@@ -1,26 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GameScope } from 'boardgame.io-angular';
 import { Example } from './examples';
 
 @Component({
   template: `
-    <bio-client *ngIf="showClient; else noConfig" gameID="single"></bio-client>
+    <ng-container *ngIf="component; else noConfig">
+        <ng-container *ngComponentOutlet="component; injector: injector;"></ng-container>
+    </ng-container>
     <ng-template #noConfig>Could not find game config</ng-template>
   `,
-  providers: [GameScope],
 })
 export class ExampleComponent {
-  showClient = false;
+  component?: object;
 
-  constructor(route: ActivatedRoute, gameScope: GameScope) {
+  constructor(route: ActivatedRoute, public injector: Injector) {
     route.data.subscribe(({example}: {example: Example}) => {
-      if (example.hasOwnProperty('gameConfig')) {
-        gameScope.setConfig(example.gameConfig);
-        this.showClient = true;
-      } else {
-        this.showClient = false;
-      }
+      this.component = example.component;
     });
   }
 }

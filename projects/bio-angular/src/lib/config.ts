@@ -33,6 +33,12 @@ export class GameScope {
   private configSubject = new BehaviorSubject<GameConfig | false>(false);
   configObservable = this.configSubject.asObservable();
 
+  static fromConfig(config: GameConfig) {
+    const scope = new GameScope();
+    scope.setConfig(config);
+    return scope;
+  }
+
   setConfig(config: GameConfig | false) {
     this.configSubject.next(config);
   }

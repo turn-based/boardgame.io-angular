@@ -1,23 +1,14 @@
 /* tslint:disable:object-literal-key-quotes */
-
-import {singlePlayerGameConfig as TicTacToeGameConfig} from './tic-tac-toe/singleplayer';
+import TicTacToeExamples from './tic-tac-toe';
 
 export interface Example {
   sectionId: string;
   name: string;
-  gameConfig?: any;
+  component?: object;
 }
 
 const exampleSections: { [sectionId: string]: { [exampleName: string]: Example } } = {
-  'Tic-Tac-Toe': {
-    'Singleplayer': {
-      sectionId: 'Tic-Tac-Toe', name: 'Singleplayer',
-      gameConfig: TicTacToeGameConfig,
-    },
-    'Multiplayer': {sectionId: 'Tic-Tac-Toe', name: 'Multiplayer'},
-    'Authenticated': {sectionId: 'Tic-Tac-Toe', name: 'Authenticated'},
-    'Spectator': {sectionId: 'Tic-Tac-Toe', name: 'Spectator'},
-  },
+  'Tic-Tac-Toe': TicTacToeExamples,
   'Chess': {
     'Singleplayer': {sectionId: 'Chess', name: 'Singleplayer'},
     'Multiplayer': {sectionId: 'Chess', name: 'Multiplayer'},
