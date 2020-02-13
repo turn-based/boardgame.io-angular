@@ -8,15 +8,4 @@ export const singlePlayerGameConfig = {
   game,
   board: BoardComponent,
   debug: { impl: Debug },
-  ai: {
-    enumerate: (G: { cells: any[] }) => {
-      const r = [];
-      for (let i = 0; i < 9; i++) {
-        if (G.cells[i] === null) {
-          r.push({ move: 'clickCell', args: [i] });
-        }
-      }
-      return r;
-    },
-  },
 };
