@@ -7,7 +7,6 @@ import { Debug } from 'boardgame.io/debug';
 import game from '../../../../../../boardgame.io/examples/react-web/src/tic-tac-toe/game.js';
 
 @Component({
-  selector: 'bio-tic-tac-toe-single-player-example',
   template: `
     <bio-client gameID="single"></bio-client>
   `,
@@ -25,7 +24,6 @@ export class SingleplayerComponent {
     SingleplayerComponent,
   ],
   imports: [
-    CommonModule,
     BoardgameIoModule,
   ],
 })

@@ -21,3 +21,14 @@ $cc: mat-color(map-get($theme, 'background'), 'hover');
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+
+.runner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+
+  & .run {
+    text-align: center;
+  }
+}
