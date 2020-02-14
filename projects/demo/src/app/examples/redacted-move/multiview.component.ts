@@ -43,8 +43,8 @@ import game from '../../../../../../boardgame.io/examples/react-web/src/redacted
   }],
 })
 export class MultiviewComponent {
-  static readonly exampleName = 'Example';
   static readonly sectionId = 'Redacted Move';
+  static readonly exampleName = 'Example';
 }
 
 @NgModule({

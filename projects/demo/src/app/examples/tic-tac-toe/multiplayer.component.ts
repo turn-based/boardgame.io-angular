@@ -30,8 +30,8 @@ import game from '../../../../../../boardgame.io/examples/react-web/src/tic-tac-
   }],
 })
 export class MultiplayerComponent {
-  static readonly exampleName = 'Multiplayer';
   static readonly sectionId = 'Tic-Tac-Toe';
+  static readonly exampleName = 'Multiplayer';
 }
 
 @NgModule({

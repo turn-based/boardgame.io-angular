@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
         <strong>log</strong>
         <pre>{{log | json}}</pre>
 
-        <button [disabled]="playerID == null" (click)="moves.clickCell({ secret: G.players[ctx.currentPlayer] })">
+        <button [disabled]="playerID == null" (click)="moves.clickCell({ secret: G.players[playerID] })">
           Click Cell
         </button>
       </section>

@@ -15,8 +15,8 @@ import game from '../../../../../../boardgame.io/examples/react-web/src/random/g
     })}],
 })
 export class RandomApiComponent {
-  static readonly exampleName = 'Random API';
-  static readonly sectionId = 'Examples';
+  static readonly sectionId = 'Random API';
+  static readonly exampleName = 'Example';
 }
 
 @NgModule({
