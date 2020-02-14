@@ -14,6 +14,10 @@ export class BoardBase {
   moves: any;
   log: any;
 
+  undo: any;
+  redo: any;
+  events: any;
+
   constructor(@Inject(OBSERVABLE_BOARD_CONFIG) private observableBoardConfig: Observable<BoardConfig>) {
     this.observableBoardConfig.subscribe((config) => {
       if (config) {
