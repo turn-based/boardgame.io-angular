@@ -1,22 +1,23 @@
 /* tslint:disable:object-literal-key-quotes */
 import TicTacToeExamples from './tic-tac-toe';
+import RandomApiExamples from './random';
 
 export interface Example {
   sectionId: string;
-  name: string;
-  component?: object;
+  exampleName: string;
 }
 
-const exampleSections: { [sectionId: string]: { [exampleName: string]: Example } } = {
+export const exampleSections: { [sectionId: string]: Example[] } = {
   'Tic-Tac-Toe': TicTacToeExamples,
-  'Chess': {
-    'Singleplayer': {sectionId: 'Chess', name: 'Singleplayer'},
-    'Multiplayer': {sectionId: 'Chess', name: 'Multiplayer'},
-  }
+  'Chess': [
+    {sectionId: 'Chess', exampleName: 'Singleplayer'},
+    {sectionId: 'Chess', exampleName: 'Multiplayer'},
+  ],
+  'Random API': RandomApiExamples,
 };
 
 export function getExample(sectionId: string | null, exampleName: string | null) {
   if (sectionId != null && exampleName != null) {
-    return exampleSections[sectionId][exampleName];
+    return exampleSections[sectionId].find(e => e.exampleName === exampleName);
   }
 }

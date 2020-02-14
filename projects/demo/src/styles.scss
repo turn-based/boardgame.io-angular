@@ -13,10 +13,9 @@ $theme: mat-dark-theme($primary, $accent);
 // Include all theme styles for the components.
 @include angular-material-theme($theme);
 
-$cc: mat-color(map-get($theme, 'background'), 'hover');
 // add my variables
 :root {
-  --global-selected: #{mat-color(map-get($theme, background), focused-button)}; //green;//mat-color(map-get($theme, 'foreground'), 'base');
+  --global-selected: #{mat-color(map-get($theme, background), hover)}; //green;//mat-color(map-get($theme, 'foreground'), 'base');
 }
 
 html, body { height: 100%; }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { filter, map, shareReplay, withLatestFrom } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
+import { exampleSections } from './examples';
 
 @Component({
   selector: 'bio-root',
@@ -16,9 +17,10 @@ import { NavigationEnd, Router } from '@angular/router';
         <mat-toolbar>Examples</mat-toolbar>
         <mat-nav-list>
           <ng-container *ngFor="let exampleSection of exampleSections">
-            <h3 matSubheader>{{exampleSection.id}}</h3>
-            <a *ngFor="let exampleName of exampleSection.exampleNames" mat-list-item
-               [routerLink]="['examples', exampleSection.id, exampleName]" routerLinkActive="active">{{exampleName}}</a>
+            <mat-divider></mat-divider>
+            <h3 matSubheader>{{exampleSection[0]}}</h3>
+            <a *ngFor="let example of exampleSection[1]" mat-list-item
+               [routerLink]="['examples', exampleSection[0], example.exampleName]" routerLinkActive="active">{{example.exampleName}}</a>
           </ng-container>
         </mat-nav-list>
       </mat-sidenav>
@@ -34,7 +36,7 @@ import { NavigationEnd, Router } from '@angular/router';
           </button>
           <span>
             <ng-container *ngIf="routerOutlet.activatedRouteData['example'] as example">
-              {{example.sectionId}}: {{example.name}}
+              {{example.sectionId}}: {{example.exampleName}}
             </ng-container>
           </span>
         </mat-toolbar>
@@ -73,21 +75,18 @@ import { NavigationEnd, Router } from '@angular/router';
     }
 
     [mat-list-item].active {
+      width: auto;
       background: var(--global-selected);
-      /*background: #61dafb;*/
+      border-left: 4px solid var(--global-selected);
     }
   `]
 })
 export class NavigationComponent {
   @ViewChild('drawer', {static: true}) drawer: MatSidenav;
 
-  exampleSections = [{
-    id: 'Tic-Tac-Toe',
-    exampleNames: ['Singleplayer', 'Multiplayer', 'Authenticated', 'Spectator']
-  }, {
-    id: 'Chess',
-    exampleNames: ['Singleplayer', 'Multiplayer']
-  }];
+  // todo see https://github.com/angular/angular/issues/20995
+  exampleSections = Object.entries(exampleSections);
+
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

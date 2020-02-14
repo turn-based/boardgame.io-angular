@@ -17,6 +17,8 @@ import game from '../../../../../../boardgame.io/examples/react-web/src/tic-tac-
     })}],
 })
 export class SingleplayerComponent {
+  static readonly exampleName = 'Singleplayer';
+  static readonly sectionId = 'Tic-Tac-Toe';
 }
 
 @NgModule({
