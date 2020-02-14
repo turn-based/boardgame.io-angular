@@ -12,6 +12,7 @@ export class BoardBase {
   ctx: any;
   G: any;
   moves: any;
+  log: any;
 
   constructor(@Inject(OBSERVABLE_BOARD_CONFIG) private observableBoardConfig: Observable<BoardConfig>) {
     this.observableBoardConfig.subscribe((config) => {

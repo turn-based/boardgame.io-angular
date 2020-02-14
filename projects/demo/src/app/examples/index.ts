@@ -1,6 +1,6 @@
-/* tslint:disable:object-literal-key-quotes */
 import TicTacToeExamples from './tic-tac-toe';
 import RandomApiExamples from './random';
+import RedactedMoveExamples from './redacted-move';
 
 export interface Example {
   sectionId: string;
@@ -9,11 +9,8 @@ export interface Example {
 
 export const exampleSections: { [sectionId: string]: Example[] } = {
   'Tic-Tac-Toe': TicTacToeExamples,
-  'Chess': [
-    {sectionId: 'Chess', exampleName: 'Singleplayer'},
-    {sectionId: 'Chess', exampleName: 'Multiplayer'},
-  ],
   'Random API': RandomApiExamples,
+  'Redacted Move': RedactedMoveExamples
 };
 
 export function getExample(sectionId: string | null, exampleName: string | null) {
