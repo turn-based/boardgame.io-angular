@@ -1,4 +1,3 @@
-/* tslint:disable:object-literal-key-quotes */
+import { RandomApiComponent } from './random-api.component';
 
-
-export default [{sectionId: 'Random API', exampleName: 'Examples'}];
+export default [RandomApiComponent];
