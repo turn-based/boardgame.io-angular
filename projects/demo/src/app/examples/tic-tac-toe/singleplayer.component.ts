@@ -8,17 +8,18 @@ import game from '../../../../../../boardgame.io/examples/react-web/src/tic-tac-
 
 @Component({
   template: `
-    <bio-client gameID="single"></bio-client>
+    <bio-client gameID="single" [bioGameScope]="gameConfig"></bio-client>
   `,
-  providers: [{provide: GameScope, useValue: GameScope.fromConfig({
-      game,
-      board: BoardComponent,
-      debug: { impl: Debug },
-    })}],
 })
 export class SingleplayerComponent {
   static readonly sectionId = 'Tic-Tac-Toe';
   static readonly exampleName = 'Singleplayer';
+
+  gameConfig = {
+    game,
+    board: BoardComponent,
+    debug: { impl: Debug },
+  };
 }
 
 @NgModule({
