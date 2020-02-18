@@ -1,13 +1,13 @@
 
 # Boardgame.io Angular Client  
   
- <a href="https://www.npmjs.com/package/boardgame.io-angular"><img src="https://badge.fury.io/js/boardgame.io-angular.svg" alt="npm version"></a>  
+<a href="https://www.npmjs.com/package/boardgame.io-angular"><img src="https://badge.fury.io/js/boardgame.io-angular.svg" alt="npm version"></a>  
   
-  Angular client for [Boardgame.io](http://boardgame.io).  
+Angular client for [Boardgame.io](http://boardgame.io).  
   
- Checkout the [example application](https://turn-based-209306.firebaseapp.com) (currently hosts legacy 0.24.0)
+Checkout the [example application](https://turn-based-209306.firebaseapp.com) (currently hosts legacy 0.24.0)
 
-Current version (>=0.25) is build using Angular 9
+Current version (>=0.25) was built using Angular 9.
   
 ### Installation  
   
@@ -19,7 +19,7 @@ $ npm install --save boardgame.io-angular boardgame.io@0.37
   
 ### Usage  
   
-1) Define your <span>boardgame.</span>io's framework independent [Game](https://boardgame.io/documentation/#/api/Game)
+1) Define your <span>boardgame.</span>io's framework independent [Game](https://boardgame.io/documentation/#/api/Game).
 2) Define your board component that inherits BoardBase - the available properties are described at the [Client's documentation under board component](http://boardgame.io/documentation/#/api/Client):
    ```ts  
     @Component({  
@@ -82,7 +82,7 @@ $ npm install --save boardgame.io-angular boardgame.io@0.37
      </ng-container>
 	 ```
    * `bioGameConfig` just assigns a config to a `GameScope` injectable. You can also directly make a `GameScope` available to `bio-client` using the `providers` property of an available module, a parent component, or a directive.
-5) See [the examples](projects/demo/src/app/examples)  
+5) See [the examples](projects/demo/src/app/examples).
   
 ### Development
 
