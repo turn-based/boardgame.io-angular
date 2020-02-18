@@ -1,6 +1,5 @@
 import { Component, NgModule } from '@angular/core';
-import { BoardgameIoModule, GameScope } from 'boardgame.io-angular';
-import { CommonModule } from '@angular/common';
+import { BoardgameIoModule } from 'boardgame.io-angular';
 import { BoardComponent } from './board.component';
 import { Debug } from 'boardgame.io/debug';
 // @ts-ignore
@@ -8,7 +7,7 @@ import game from '../../../../../../boardgame.io/examples/react-web/src/tic-tac-
 
 @Component({
   template: `
-    <bio-client gameID="single" [bioGameScope]="gameConfig"></bio-client>
+    <bio-client gameID="single" [bioGameConfig]="gameConfig"></bio-client>
   `,
 })
 export class SingleplayerComponent {

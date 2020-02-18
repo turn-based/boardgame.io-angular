@@ -1,6 +1,5 @@
 import { Component, NgModule } from '@angular/core';
 import { BoardgameIoModule, GameScope } from 'boardgame.io-angular';
-import { CommonModule } from '@angular/common';
 import { BoardComponent } from './board.component';
 
 import { Local } from 'boardgame.io/multiplayer';

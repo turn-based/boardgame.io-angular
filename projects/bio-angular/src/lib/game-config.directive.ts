@@ -2,11 +2,11 @@ import { Directive, Host, Input } from '@angular/core';
 import { GameConfig, GameScope } from './config';
 
 @Directive({
-  selector: '[bioGameScope]',
+  selector: '[bioGameConfig]',
   providers: [{provide: GameScope}],
 })
-export class GameScopeDirective {
-  @Input() set bioGameScope(gameConfig: GameConfig) {
+export class GameConfigDirective {
+  @Input() set bioGameConfig(gameConfig: GameConfig) {
     this.gameScope.setConfig(gameConfig);
   }
 
