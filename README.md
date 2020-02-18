@@ -82,7 +82,7 @@ $ npm install --save boardgame.io-angular boardgame.io@0.37
      </ng-container>
 	 ```
    * `bioGameConfig` just assigns a config to a `GameScope` injectable. You can also directly make a `GameScope` available to `bio-client` using the `providers` property of an available module, a parent component, or a directive.
-5) See [the examples](https://github.com/turn-based/boardgame.io-angular/tree/master/projects/demo/src/app/examples)  
+5) See [the examples](projects/demo/src/app/examples)  
   
 ### Development
 
