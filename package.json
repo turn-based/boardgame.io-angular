@@ -5,7 +5,7 @@
     "build": "ng build",
     "build:lib:prod": "ng build bio-angular --configuration production",
     "build:demo:prod": "ng build --configuration production",
-    "deploy:demo": "firebase deploy",
+    "deploy:demo": "firebase deploy --token \"$FIREBASE_TOKEN\"",
     "watch:lib": "ng build bio-angular --watch",
     "test": "ng test",
     "lint": "ng lint",

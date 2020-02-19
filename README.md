@@ -5,7 +5,7 @@
   
 Angular client for [Boardgame.io](http://boardgame.io).  
   
-Checkout the [example application](https://turn-based-209306.firebaseapp.com) (currently hosts legacy 0.24.0)
+Checkout the [demo application](https://turn-based-209306.firebaseapp.com)
 
 Current version (>=0.25) was built using Angular 9.
   
