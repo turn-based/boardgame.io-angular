@@ -1,6 +1,6 @@
 {
   "name": "boardgame.io-angular",
-  "version": "0.25.0-next",
+  "version": "0.25.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/turn-based/boardgame.io-angular.git"
@@ -12,7 +12,11 @@
     "url": "https://amitport.github.io"
   },
   "license": "MIT",
-  "keywords": ["angular", "boardgame.io", "turn-based"],
+  "keywords": [
+    "angular",
+    "boardgame.io",
+    "turn-based"
+  ],
   "description": "Angular client for boardgame.io",
   "peerDependencies": {
     "@angular/common": "^9.0.1",
