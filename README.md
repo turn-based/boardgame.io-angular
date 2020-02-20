@@ -35,6 +35,7 @@ $ npm install --save boardgame.io-angular boardgame.io@0.37
     }
    ``` 
   * This board component is loaded dynamaically, so it shouldn't indirectly depend on other parts of your application. In order to define its module dependencies you need to add a module:
+  
 	    ```ts
 	    @NgModule({
 	        declarations: [MyBoardComponent],
