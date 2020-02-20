@@ -22,26 +22,26 @@ $ npm install --save boardgame.io-angular boardgame.io@0.37
 1) Define your <span>boardgame.</span>io's framework independent [Game](https://boardgame.io/documentation/#/api/Game).
 2) Define your board component that inherits BoardBase - the available properties are described at the [Client's documentation under board component](http://boardgame.io/documentation/#/api/Client):
    ```ts  
-    @Component({  
-      template: 'do something like {{G | json}}',  
-    })  
-    export class MyBoardComponent extends BoardBase {  
-        // unfortunately, 
-        // the following boilerplate is currently required:
-        constructor(@Inject(OBSERVABLE_BOARD_CONFIG) 
-                    observableBoardConfig: Observable<BoardConfig>) {  
-            super(observableBoardConfig);  
-        }  
+   @Component({  
+     template: 'do something like {{G | json}}',  
+   })  
+   export class MyBoardComponent extends BoardBase {  
+      // unfortunately, 
+      // the following boilerplate is currently required:
+      constructor(@Inject(OBSERVABLE_BOARD_CONFIG) 
+                  observableBoardConfig: Observable<BoardConfig>) {  
+        super(observableBoardConfig);  
+      }  
     }
-   ``` 
+    ``` 
   * This board component is loaded dynamaically, so it shouldn't indirectly depend on other parts of your application. In order to define its module dependencies you need to add a module:
   
-	    ```ts
-	    @NgModule({
-	        declarations: [MyBoardComponent],
-	        imports: [CommonModule, /* other dependencies */],  
-	    }) export class StupidButNeededModule {}
-	    ```
+	  ```ts
+	  @NgModule({
+	    declarations: [MyBoardComponent],
+	    imports: [CommonModule, /* other dependencies */],  
+	  }) export class StupidButNeededModule {}
+	  ```
     
 	   (It would have been nice to be able to just specify imports on the board component; this feature is tracked by [Angular issue#33507](https://github.com/angular/angular/issues/33507)).
 3) import the module in you main app:  
