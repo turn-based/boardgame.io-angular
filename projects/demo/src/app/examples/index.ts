@@ -1,5 +1,6 @@
 /* tslint:disable:object-literal-key-quotes */
 
+import CatverseExamples from './catverse';
 import TicTacToeExamples from './tic-tac-toe';
 import RandomApiExamples from './random';
 import RedactedMoveExamples from './redacted-move';
@@ -12,6 +13,7 @@ export interface Example {
 }
 
 export const exampleSections: { [sectionId: string]: Example[] } = {
+  'catverse': CatverseExamples,
   'Tic-Tac-Toe': TicTacToeExamples,
   'Random API': RandomApiExamples,
   'Redacted Move': RedactedMoveExamples,
