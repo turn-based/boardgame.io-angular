@@ -29,7 +29,7 @@ import game from './game.js';
   }],
 })
 export class MultiplayerComponent {
-  static readonly sectionId = 'Tic-Tac-Toe';
+  static readonly sectionId = 'catverse';
   static readonly exampleName = 'Multiplayer';
 }
 

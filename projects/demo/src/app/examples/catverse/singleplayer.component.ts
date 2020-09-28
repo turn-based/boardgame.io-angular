@@ -11,7 +11,7 @@ import game from '../../../../../../boardgame.io/examples/react-web/src/tic-tac-
   `,
 })
 export class SingleplayerComponent {
-  static readonly sectionId = 'Tic-Tac-Toe';
+  static readonly sectionId = 'catverse';
   static readonly exampleName = 'Singleplayer';
 
   gameConfig = {
